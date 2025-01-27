@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Server Minecraft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: url('https://via.placeholder.com/1920x1080') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+        }
+        .status, .donation, .server-info, .player-list {
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.7);
+            width: 80%;
+            max-width: 600px;
+        }
+        h1, h2 {
+            margin: 0;
+        }
+        a {
+            text-decoration: none;
+            color: #fff;
+        }
+        .btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="status">
+        <h1>Status Server Minecraft</h1>
+        <p id="server-status">Memuat status server...</p>
+    </div>
+
+    <div class="server-info">
+        <h2>Informasi Server</h2>
+        <p id="server-info">Klik tombol di bawah untuk melihat IP dan port server.</p>
+        <button class="btn" onclick="showServerInfo()">Tampilkan IP & Port</button>
+    </div>
+
+    <div class="player-list">
+        <h2>Pemain Online</h2>
+        <p id="players-status">Memuat daftar pemain...</p>
+        <ul id="player-list"></ul>
+    </div>
+
+    <div class="donation">
+        <h2>Ingin Mendukung Kami?</h2>
+        <p>Klik link di bawah ini untuk memberikan donasi:</p>
+        <a class="btn" href="https://donasi-link-anda.com" target="_blank">Donasi Sekarang</a>
+    </div>
+
+    <script>
+        const serverIp = "kimnetwork.zapto.org";
+        const serverPort = 20702;
+
+        // Fungsi untuk mendapatkan status server Minecraft
+        async function fetchMinecraftStatus() {
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/2/${serverIp}:${serverPort}`);
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Status server
+                    if (data.online) {
+                        document.getElementById("server-status").textContent = 
+                            `Server Online: Ya | Pemain Aktif: ${data.players.online} / ${data.players.max}`;
+                        
+                        // Daftar pemain online
+                        const playerList = document.getElementById("player-list");
+                        if (data.players.list && data.players.list.length > 0) {
+                            playerList.innerHTML = "";
+                            data.players.list.forEach(player => {
+                                const playerItem = document.createElement("li");
+                                playerItem.textContent = player; // Jika ada prefix, tambahkan di sini
+                                playerList.appendChild(playerItem);
+                            });
+                        } else {
+                            document.getElementById("players-status").textContent = "Tidak ada pemain yang online saat ini.";
+                        }
+                    } else {
+                        document.getElementById("server-status").textContent = "Server sedang offline.";
+                        document.getElementById("players-status").textContent = "Tidak ada data pemain.";
+                    }
+                } else {
+                    document.getElementById("server-status").textContent = "Gagal memuat status server.";
+                }
+            } catch (error) {
+                document.getElementById("server-status").textContent = "Terjadi kesalahan: " + error.message;
+            }
+        }
+
+        // Fungsi untuk menampilkan IP dan port server
+        function showServerInfo() {
+            document.getElementById("server-info").textContent = `IP Server: ${serverIp}, Port: ${serverPort}`;
+        }
+
+        // Memuat status server saat halaman dibuka
+        fetchMinecraftStatus();
+    </script>
+</body>
+</html>
