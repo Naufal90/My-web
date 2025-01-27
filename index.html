@@ -189,19 +189,22 @@
             serverDetailsDiv.innerHTML = detailsHTML;
         }
 
-        async function checkGamerTagFile() {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
-                    headers: { Authorization: `Bearer ${githubToken}` },
-                });
-                return response.ok;
-            } catch (error) {
-                console.error("Error:", error);
-                return false;
-            }
+        async function getFileSHA() {
+    try {
+        const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
+            headers: { Authorization: `Bearer ${githubToken}` },
+        });
+        if (response.ok) {
+            const data = await response.json();
+            return data.sha; // Mengambil SHA file
         }
+    } catch (error) {
+        console.error("Gagal mendapatkan SHA file:", error);
+    }
+    return null; // Jika file tidak ada
+}
 
-        async function saveGamerTag() {
+async function saveGamerTag() {
     const gamerTag = document.getElementById("gamertag-input").value.trim();
     if (!gamerTag) {
         alert("Harap masukkan GamerTag Anda.");
@@ -209,8 +212,8 @@
     }
 
     const fileContent = `gamertag: ${gamerTag}`;
-    const encodedContent = btoa(fileContent);
-    const sha = await getFileSHA(); // Ambil SHA file yang ada
+    const encodedContent = btoa(fileContent); // Encode ke base64
+    const sha = await getFileSHA(); // Ambil SHA file jika ada
 
     try {
         const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
@@ -222,7 +225,7 @@
             body: JSON.stringify({
                 message: "Menambahkan GamerTag",
                 content: encodedContent,
-                sha: sha // Tambahkan SHA jika file sudah ada
+                sha: sha || undefined // Tambahkan SHA jika file sudah ada
             }),
         });
 
@@ -237,8 +240,8 @@
         console.error("Error:", error);
         alert("Terjadi kesalahan saat menyimpan GamerTag.");
     }
-        }
-
+            }
+        
         window.addEventListener("load", async () => {
             const fileExists = await checkGamerTagFile();
             if (!fileExists) {
