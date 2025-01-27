@@ -194,111 +194,59 @@
                 const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
                     headers: { Authorization: `Bearer ${githubToken}` },
                 });
-                if (response.ok) {
-                    return true; // File ada
-                }
+                return response.ok;
             } catch (error) {
-                if (error.message.includes("404")) {
-                    return false; // File tidak ditemukan
-                }
-                console.error("Gagal memeriksa file:", error);
+                console.error("Error:", error);
+                return false;
             }
-            return false;
-        }
-
-        async function getFileSHA() {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
-                    headers: { Authorization: `Bearer ${githubToken}` },
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    return data.sha; // Mengambil SHA file
-                }
-            } catch (error) {
-                console.error("Gagal mendapatkan SHA file:", error);
-            }
-            return null; // Jika file tidak ada
         }
 
         async function saveGamerTag() {
-            const gamerTag = document.getElementById("gamertag-input").value.trim();
-            if (!gamerTag) {
-                alert("Harap masukkan GamerTag Anda.");
-                return;
-            }
+    const gamerTag = document.getElementById("gamertag-input").value.trim();
+    if (!gamerTag) {
+        alert("Harap masukkan GamerTag Anda.");
+        return;
+    }
 
-            const fileContent = `gamertag: ${gamerTag}`;
-            const encodedContent = btoa(fileContent); // Encode ke base64
-            const sha = await getFileSHA(); // Ambil SHA file jika ada
+    const fileContent = `gamertag: ${gamerTag}`;
+    const encodedContent = btoa(fileContent);
+    const sha = await getFileSHA(); // Ambil SHA file yang ada
 
-            try {
-                const fileExists = await checkGamerTagFile();
-                if (!fileExists) {
-                    // Jika file tidak ada, buat file baru
-                    await createNewFile(encodedContent);
-                } else {
-                    // Jika file ada, update file
-                    await updateExistingFile(encodedContent, sha);
-                }
-                alert("GamerTag berhasil disimpan.");
-                document.getElementById("popup").style.display = "none";
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Terjadi kesalahan saat menyimpan GamerTag.");
-            }
+    try {
+        const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${githubToken}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                message: "Menambahkan GamerTag",
+                content: encodedContent,
+                sha: sha // Tambahkan SHA jika file sudah ada
+            }),
+        });
+
+        if (response.ok) {
+            alert("GamerTag berhasil disimpan.");
+            document.getElementById("popup").style.display = "none";
+        } else {
+            const errorData = await response.json();
+            throw new Error(`Gagal menyimpan GamerTag: ${errorData.message}`);
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Terjadi kesalahan saat menyimpan GamerTag.");
+    }
         }
 
-        async function createNewFile(encodedContent) {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${githubToken}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: "Menambahkan GamerTag baru",
-                        content: encodedContent,
-                    }),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`Gagal membuat file baru: ${errorData.message}`);
-                }
-            } catch (error) {
-                console.error("Error saat membuat file baru:", error);
-                throw error;
+        window.addEventListener("load", async () => {
+            const fileExists = await checkGamerTagFile();
+            if (!fileExists) {
+                document.getElementById("popup").style.display = "flex";
+            } else {
+                fetchMinecraftStatus();
             }
-        }
-
-        async function updateExistingFile(encodedContent, sha) {
-            try {
-                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
-                    method: "PUT",
-                    headers: {
-                        Authorization: `Bearer ${githubToken}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: "Memperbarui GamerTag",
-                        content: encodedContent,
-                        sha: sha,
-                    }),
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(`Gagal memperbarui file: ${errorData.message}`);
-                }
-            } catch (error) {
-                console.error("Error saat memperbarui file:", error);
-                throw error;
-            }
-        }
-
-        window.onload = fetchMinecraftStatus;
+        });
     </script>
 </body>
 </html>
