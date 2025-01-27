@@ -63,9 +63,56 @@
         .server-info, .player-list {
             margin-top: 30px;
         }
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        .popup-content {
+            background: #333;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #fff;
+            max-width: 400px;
+            width: 100%;
+        }
+        .popup-content input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #555;
+            border-radius: 5px;
+        }
+        .popup-content button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .popup-content button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
+    <div id="popup" class="popup" style="display: none;">
+        <div class="popup-content">
+            <h2>Masukkan GamerTag Minecraft Anda</h2>
+            <input type="text" id="gamertag-input" placeholder="GamerTag Anda">
+            <button onclick="saveGamerTag()">Simpan</button>
+        </div>
+    </div>
+
     <div class="status">
         <h1>Status Server KimNetwork</h1>
         <p id="server-status">Memuat status server...</p>
@@ -90,26 +137,23 @@
     </div>
 
     <script>
-        // Server data dengan IP dan port hanya untuk Bedrock
         const serverData = [
             { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
             { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
         ];
+        const githubRepo = "username/repo"; // Ganti dengan nama repo GitHub Anda
+        const githubToken = "ghp_your_personal_access_token"; // Ganti dengan GitHub Personal Access Token Anda
+        const filePath = "gamertag.yml";
 
-        // Fungsi untuk mendapatkan status server Minecraft
         async function fetchMinecraftStatus() {
-            const activeServer = serverData[0]; // Gunakan server Bedrock untuk memeriksa status (server[0])
-
+            const activeServer = serverData[0];
             try {
                 const response = await fetch(`https://api.mcsrvstat.us/2/${activeServer.ip}:${activeServer.ports[0]}`);
                 if (response.ok) {
                     const data = await response.json();
-
                     if (data.online) {
                         document.getElementById("server-status").textContent = 
                             `Server Online: Ya | Pemain Aktif: ${data.players.online} / ${data.players.max}`;
-                        
-                        // Daftar pemain online
                         const playerList = document.getElementById("player-list");
                         if (data.players.list && data.players.list.length > 0) {
                             playerList.innerHTML = "";
@@ -133,11 +177,10 @@
             }
         }
 
-        // Fungsi untuk menampilkan IP dan port server (Java dan Bedrock)
         function showServerInfo() {
             const serverDetailsDiv = document.getElementById("server-details");
             let detailsHTML = '';
-            serverData.forEach((server, index) => {
+            serverData.forEach(server => {
                 detailsHTML += `
                     <p><strong>IP Server ${server.type}:</strong> ${server.ip}</p>
                     <p><strong>Port Server ${server.type}:</strong> ${server.ports.join(', ')}</p>
@@ -146,16 +189,56 @@
             serverDetailsDiv.innerHTML = detailsHTML;
         }
 
-        // Memuat status server saat halaman dibuka
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.status, .server-info, .player-list, .donation').forEach((el, index) => {
-                setTimeout(() => {
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, index * 300); // Efek animasi bertahap
-            });
+        async function checkGamerTagFile() {
+            try {
+                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
+                    headers: { Authorization: `Bearer ${githubToken}` },
+                });
+                return response.ok;
+            } catch (error) {
+                console.error("Error:", error);
+                return false;
+            }
+        }
 
-            fetchMinecraftStatus(); // Cek status server Bedrock di awal
+        async function saveGamerTag() {
+            const gamerTag = document.getElementById("gamertag-input").value.trim();
+            if (!gamerTag) {
+                alert("Harap masukkan GamerTag Anda.");
+                return;
+            }
+            const fileContent = `gamertag: ${gamerTag}`;
+            const encodedContent = btoa(fileContent);
+            try {
+                const response = await fetch(`https://api.github.com/repos/${githubRepo}/contents/${filePath}`, {
+                    method: "PUT",
+                    headers: { 
+                        Authorization: `Bearer ${githubToken}`,
+                        "Content-Type": "application/json" 
+                    },
+                    body: JSON.stringify({
+                        message: "Menambahkan GamerTag",
+                        content: encodedContent,
+                    }),
+                });
+                if (response.ok) {
+                    alert("GamerTag berhasil disimpan.");
+                    document.getElementById("popup").style.display = "none";
+                } else {
+                    throw new Error(`Gagal menyimpan GamerTag: ${response.status}`);
+                }
+            } catch (error) {
+                alert("Terjadi kesalahan saat menyimpan GamerTag.");
+            }
+        }
+
+        window.addEventListener("load", async () => {
+            const fileExists = await checkGamerTagFile();
+            if (!fileExists) {
+                document.getElementById("popup").style.display = "flex";
+            } else {
+                fetchMinecraftStatus();
+            }
         });
     </script>
 </body>
