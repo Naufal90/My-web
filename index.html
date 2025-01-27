@@ -73,8 +73,7 @@
 
     <div class="server-info">
         <h2>Informasi Server</h2>
-        <button class="btn" onclick="showServerInfo('java')">Tampilkan IP & Port Server Java</button>
-        <button class="btn" onclick="showServerInfo('bedrock')">Tampilkan IP & Port Server Bedrock</button>
+        <button class="btn" onclick="showServerInfo()">Tampilkan IP & Port Server</button>
         <div id="server-details" style="margin-top: 20px;"></div>
     </div>
 
@@ -91,16 +90,18 @@
     </div>
 
     <script>
-        // Server data dengan dua IP, satu untuk Java dan satu untuk Bedrock
+        // Server data dengan IP dan port hanya untuk Bedrock
         const serverData = [
-            { ip: "kimnetwork.zapto.org", ports: [20702], type: "Java" },
-            { ip: "kimnetwork.zapto.org", ports: [20607], type: "Bedrock" }
+            { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
+            { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
         ];
 
         // Fungsi untuk mendapatkan status server Minecraft
-        async function fetchMinecraftStatus(server) {
+        async function fetchMinecraftStatus() {
+            const activeServer = serverData[0]; // Gunakan server Bedrock untuk memeriksa status (server[0])
+
             try {
-                const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
+                const response = await fetch(`https://api.mcsrvstat.us/2/${activeServer.ip}:${activeServer.ports[0]}`);
                 if (response.ok) {
                     const data = await response.json();
 
@@ -132,30 +133,29 @@
             }
         }
 
-        // Fungsi untuk menampilkan IP dan port server
-        function showServerInfo(serverType) {
+        // Fungsi untuk menampilkan IP dan port server (Java dan Bedrock)
+        function showServerInfo() {
             const serverDetailsDiv = document.getElementById("server-details");
-            const selectedServer = serverData.find(server => server.type.toLowerCase() === serverType.toLowerCase());
-            
-            if (selectedServer) {
-                serverDetailsDiv.innerHTML = `
-                    <p><strong>IP Server ${selectedServer.type}:</strong> ${selectedServer.ip}</p>
-                    <p><strong>Port Server ${selectedServer.type}:</strong> ${selectedServer.ports.join(', ')}</p>
+            let detailsHTML = '';
+            serverData.forEach((server, index) => {
+                detailsHTML += `
+                    <p><strong>IP Server ${server.type}:</strong> ${server.ip}</p>
+                    <p><strong>Port Server ${server.type}:</strong> ${server.ports.join(', ')}</p>
                 `;
-                fetchMinecraftStatus(selectedServer); // Periksa status server yang dipilih
-            }
+            });
+            serverDetailsDiv.innerHTML = detailsHTML;
         }
 
         // Memuat status server saat halaman dibuka
         window.addEventListener('load', () => {
-            fetchMinecraftStatus(serverData[0]); // Default ke server Java
-
             document.querySelectorAll('.status, .server-info, .player-list, .donation').forEach((el, index) => {
                 setTimeout(() => {
                     el.style.opacity = '1';
                     el.style.transform = 'translateY(0)';
                 }, index * 300); // Efek animasi bertahap
             });
+
+            fetchMinecraftStatus(); // Cek status server Bedrock di awal
         });
     </script>
 </body>
