@@ -26,7 +26,7 @@
             color: #fff;
             transition: all 0.3s ease;
         }
-        .status, .donation, .server-info, .player-list {
+        .status, .donation, .server-info, .player-list, .event {
             margin: 20px auto;
             padding: 20px;
             border-radius: 8px;
@@ -43,6 +43,18 @@
         a {
             text-decoration: none;
             color: #fff;
+        }
+        .event-details {
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .event h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #FFD700;
         }
         .btn {
             display: inline-block;
@@ -69,7 +81,7 @@
             padding: 0;
             margin: 0;
         }
-        ul li {
+        ul li, .event-details p {
             margin: 5px 0;
         }
         .server-info, .player-list {
@@ -110,9 +122,21 @@
     </div>
 
     <div class="event">
-        <h2>Event Minecraft</h2>
-        <p id="event-info">Event akan segera dimulai! Jangan lewatkan kesempatan untuk berpartisipasi.</p>
-        <p id="event-timer">Waktu tersisa: <span id="countdown"></span></p>
+        <h2>🎉 Event Minecraft: Build Competition 🏆</h2>
+        <p id="event-info">Ayo tunjukkan kreativitasmu dalam event Build Competition! Menangkan hadiah menarik dan jadilah yang terbaik!</p>
+        
+        <div class="event-details">
+    <p><strong>📅 Tanggal:</strong> 2 Februari 2025</p>
+    <p><strong>🕒 Waktu:</strong> 15:00 WIB</p>
+    <p><strong>🎁 Hadiah:</strong></p>
+    <ul>
+        <li> Juara 1: Rank Builder</li>
+        <li> Juara 2: Uang Server 15k Dan 2 Mending Book</li>
+        <li> Juara 3: Uang Server 8k Dan 1 sharpness book level 4</li>
+    </ul>
+    <p><strong>⏳ Waktu tersisa:</strong> <span id="countdown"></span></p>
+        </div>
+        
         <a id="register-btn" class="btn" href="https://forms.gle/xm952kB5iK1D39TQ6" target="_blank">Daftar Sekarang</a>
     </div>
 
@@ -189,14 +213,14 @@
             serverDetailsDiv.innerHTML = detailsHTML;
         }
 
-        const eventEndTime = new Date("2025-02-10 23:59:59").getTime();
+        const eventEndTime = new Date("2025-02-10 14:00:00").getTime();
         
         function updateCountdown() {
             const now = new Date().getTime();
             const timeLeft = eventEndTime - now;
 
             if (timeLeft <= 0) {
-                document.getElementById("event-info").textContent = "Event telah berakhir. Sampai jumpa di event berikutnya!";
+                document.getElementById("event-info").textContent = "⏳ Event telah berakhir! Sampai jumpa di event berikutnya!";
                 document.getElementById("countdown").textContent = "00:00:00";
                 document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event selesai
             } else {
@@ -208,6 +232,12 @@
                 document.getElementById("countdown").textContent = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
             }
         }
+
+        // Animasi muncul
+        window.addEventListener('load', () => {
+            document.querySelector('.event').style.opacity = '1';
+            document.querySelector('.event').style.transform = 'translateY(0)';
+        });
 
         // Jalankan countdown setiap detik
         setInterval(updateCountdown, 1000);
