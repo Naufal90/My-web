@@ -109,6 +109,13 @@
         <ul id="player-list"></ul>
     </div>
 
+    <div class="event">
+        <h2>Event Minecraft</h2>
+        <p id="event-info">Event akan segera dimulai! Jangan lewatkan kesempatan untuk berpartisipasi.</p>
+        <p id="event-timer">Waktu tersisa: <span id="countdown"></span></p>
+        <a id="register-btn" class="btn" href="https://forms.gle/xm952kB5iK1D39TQ6" target="_blank">Daftar Sekarang</a>
+    </div>
+
     <div class="donation">
         <h2>Ingin Mendukung Kami?</h2>
         <p>Klik link di bawah ini untuk memberikan donasi:</p>
@@ -181,6 +188,30 @@
             });
             serverDetailsDiv.innerHTML = detailsHTML;
         }
+
+        const eventEndTime = new Date("2025-02-10 23:59:59").getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const timeLeft = eventEndTime - now;
+
+            if (timeLeft <= 0) {
+                document.getElementById("event-info").textContent = "Event telah berakhir. Sampai jumpa di event berikutnya!";
+                document.getElementById("countdown").textContent = "00:00:00";
+                document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event selesai
+            } else {
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").textContent = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+            }
+        }
+
+        // Jalankan countdown setiap detik
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
 
         // Memuat status server saat halaman dibuka
         window.addEventListener('load', () => {
