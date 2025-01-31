@@ -85,6 +85,10 @@
         .btn:hover {
             background-color: #0056b3;
         }
+        #server-info-btn:disabled {
+        background-color: #ccc; /* Warna tombol yang dinonaktifkan */
+        cursor: not-allowed; /* Menampilkan pointer yang menunjukkan tombol tidak aktif */
+        }
         img {
             max-width: 100%;
             height: auto;
@@ -235,6 +239,12 @@
             });
             serverDetailsDiv.innerHTML = detailsHTML;
         }
+
+        // Menonaktifkan tombol server-info saat halaman dimuat
+    window.addEventListener('load', () => {
+        const button = document.getElementById("server-info-btn");
+        button.disabled = true; // Menonaktifkan tombol
+    });
 
         const eventDate = new Date("2025-02-02T15:00:00+07:00"); // 15:00 WIB (UTC+7)
 
