@@ -45,16 +45,31 @@
             color: #fff;
         }
         .event-details {
-            margin: 15px 0;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 5px;
-            font-size: 16px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        max-width: 600px;
+        margin: 20px auto;
         }
         .event h2 {
             font-size: 24px;
             margin-bottom: 10px;
             color: #FFD700;
+        }
+        .rewards {
+        margin-top: 10px;
+        }
+        .reward-item {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        line-height: 1.6;
+        }
+        .reward-item strong {
+        color: #FFD700; /* Warna emas untuk penekanan */
         }
         .btn {
             display: inline-block;
@@ -128,12 +143,20 @@
         <div class="event-details">
     <p><strong>📅 Tanggal:</strong> 2 Februari 2025</p>
     <p><strong>🕒 Waktu:</strong> 15:00 WIB</p>
+    
     <p><strong>🎁 Hadiah:</strong></p>
-    <ul>
-        <li> Juara 1: Rank Builder</li>
-        <li> Juara 2: Uang Server 15k Dan 2 Mending Book</li>
-        <li> Juara 3: Uang Server 8k Dan 1 sharpness book level 4</li>
-    </ul>
+    <div class="rewards">
+        <div class="reward-item">
+            <strong>Juara 1:</strong> Rank Builder
+        </div>
+        <div class="reward-item">
+            <strong>Juara 2:</strong> Uang Server 15k dan 2 Mending Book
+        </div>
+        <div class="reward-item">
+            <strong>Juara 3:</strong> Uang Server 8k dan 1 Sharpness Book Level 4
+        </div>
+    </div>
+    
     <p><strong>⏳ Waktu tersisa:</strong> <span id="countdown"></span></p>
         </div>
         
