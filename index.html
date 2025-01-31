@@ -213,16 +213,16 @@
             serverDetailsDiv.innerHTML = detailsHTML;
         }
 
-        const eventEndTime = new Date("2025-02-10 14:00:00").getTime();
-        
+        const eventDate = new Date("2025-02-02T15:00:00+07:00"); // 15:00 WIB (UTC+7)
+
         function updateCountdown() {
-            const now = new Date().getTime();
-            const timeLeft = eventEndTime - now;
+            const now = new Date();
+            const timeLeft = eventDate - now;
 
             if (timeLeft <= 0) {
-                document.getElementById("event-info").textContent = "⏳ Event telah berakhir! Sampai jumpa di event berikutnya!";
+                document.getElementById("event-info").textContent = "⏳ Event telah dimulai! Selamat bermain!";
                 document.getElementById("countdown").textContent = "00:00:00";
-                document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event selesai
+                document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event mulai
             } else {
                 const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
