@@ -74,6 +74,21 @@
         <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok"><i class="fab fa-tiktok"></i></a>
     </div>
 
+    <!-- Tombol Login -->
+    <button class="btn" onclick="openLoginPopup()">Login / Register</button>
+
+    <!-- Popup Login/Register -->
+    <div id="login-popup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeLoginPopup()">&times;</span>
+            <h2 id="popup-title">Login</h2>
+            <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
+            <input type="password" id="password" placeholder="Masukkan Password" required>
+            <button class="btn" onclick="submitAuth()">Submit</button>
+            <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
