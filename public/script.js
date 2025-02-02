@@ -3,6 +3,12 @@ const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Fungsi untuk memeriksa apakah pengguna sudah login
+function isUserLoggedIn() {
+    const user = supabase.auth.user();
+    return !!user;
+}
+
 // Server data dengan IP dan port hanya untuk Bedrock
 const serverData = [
     { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
@@ -46,7 +52,7 @@ async function fetchMinecraftStatus() {
     }
 }
 
-// Fungsi untuk menampilkan IP dan port server (Java dan Bedrock)
+// Fungsi untuk menampilkan IP dan port server
 function showServerInfo() {
     const serverDetailsDiv = document.getElementById("server-details");
     let detailsHTML = '';
@@ -62,7 +68,7 @@ function showServerInfo() {
 // Menonaktifkan tombol server-info saat halaman dimuat
 window.addEventListener('load', () => {
     const button = document.querySelector('.server-info .btn');
-    if (button) button.disabled = true; // Menonaktifkan tombol
+    if (button) button.disabled = false; // Menonaktifkan tombol
 });
 
 // Countdown event
@@ -95,33 +101,7 @@ window.addEventListener('load', () => {
     fetchMinecraftStatus(); // Cek status server Bedrock di awal
 });
 
-// Fungsi untuk membuka popup Login/Register
-function openLoginPopup() {
-    const popup = document.getElementById('login-popup');
-    popup.style.display = 'flex'; // Menampilkan popup
-}
-
-// Fungsi untuk menutup popup Login/Register
-function closeLoginPopup() {
-    const popup = document.getElementById('login-popup');
-    popup.style.display = 'none'; // Menyembunyikan popup
-}
-
-// Fungsi untuk toggle antara mode Login dan Register
-function toggleAuthMode() {
-    const popupTitle = document.getElementById('popup-title');
-    const toggleAuthText = document.getElementById('toggle-auth');
-
-    if (popupTitle.innerText === 'Login') {
-        popupTitle.innerText = 'Register';
-        toggleAuthText.innerText = 'Sudah punya akun? Login';
-    } else {
-        popupTitle.innerText = 'Login';
-        toggleAuthText.innerText = 'Belum punya akun? Register';
-    }
-}
-
-// Fungsi untuk menangani tombol Submit (Login/Register)
+// Fungsi untuk menangani login/register
 async function submitAuth() {
     const gamertag = document.getElementById("gamertag").value;
     const password = document.getElementById("password").value;
@@ -143,6 +123,10 @@ async function submitAuth() {
 
             if (error) throw error;
             alert("Login berhasil!");
+
+            // Aktifkan tombol "Lihat IP/Port Server"
+            const serverInfoBtn = document.getElementById('server-info-btn');
+            if (serverInfoBtn) serverInfoBtn.disabled = false;
         } else {
             // Register
             const { user, error } = await supabase.auth.signUp({
@@ -159,16 +143,14 @@ async function submitAuth() {
 
             if (dbError) throw dbError;
             alert("Registrasi berhasil!");
+
+            // Aktifkan tombol "Lihat IP/Port Server"
+            const serverInfoBtn = document.getElementById('server-info-btn');
+            if (serverInfoBtn) serverInfoBtn.disabled = false;
         }
 
-        closeLoginPopup(); // Tutup popup setelah berhasil
+        closeLoginPopup();
     } catch (error) {
         alert("Terjadi kesalahan: " + error.message);
     }
 }
-
-// Event listener untuk tombol Login/Register
-document.querySelector('.btn[onclick="openLoginPopup()"]').addEventListener('click', openLoginPopup);
-
-// Event listener untuk tombol Submit di popup
-document.querySelector('.popup-content button').addEventListener('click', submitAuth);
