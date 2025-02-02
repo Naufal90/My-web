@@ -79,9 +79,9 @@ a {
     transform: scale(1.05);
 }
 
-#server-info-btn:disabled {
+#server-info-btn:enable {
     background-color: #ccc;
-    cursor: not-allowed;
+    cursor: allowed;
 }
 
 img {
