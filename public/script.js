@@ -1,3 +1,8 @@
+// Konfigurasi Supabase
+const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 // Server data dengan IP dan port hanya untuk Bedrock
 const serverData = [
     { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
@@ -56,7 +61,7 @@ function showServerInfo() {
 
 // Menonaktifkan tombol server-info saat halaman dimuat
 window.addEventListener('load', () => {
-    const button = document.getElementById("server-info-btn");
+    const button = document.querySelector('.server-info .btn');
     if (button) button.disabled = true; // Menonaktifkan tombol
 });
 
@@ -90,59 +95,51 @@ window.addEventListener('load', () => {
     fetchMinecraftStatus(); // Cek status server Bedrock di awal
 });
 
-// Konfigurasi Supabase
-const { createClient } = supabase;
-const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno';
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-// Fungsi untuk Register
-async function registerAccount() {
-    const gamerTag = document.getElementById("gamerTag").value;
+// Fungsi untuk menangani tombol Submit (Login/Register)
+async function submitAuth() {
+    const gamertag = document.getElementById("gamertag").value;
     const password = document.getElementById("password").value;
 
+    if (!gamertag || !password) {
+        alert("Mohon isi GamerTag dan Password!");
+        return;
+    }
+
+    const isLoginMode = document.getElementById("popup-title").innerText === "Login";
+
     try {
-        const { user, error } = await supabase.auth.signUp({
-            email: `${gamerTag}@example.com`, // Gunakan email berdasarkan GamerTag
-            password: password
-        });
+        if (isLoginMode) {
+            // Login
+            const { user, error } = await supabase.auth.signInWithPassword({
+                email: `${gamertag}@example.com`,
+                password: password,
+            });
 
-        if (error) throw error;
-        
-        // Simpan data gamer ke database
-        const { data, error: dbError } = await supabase
-            .from('users')
-            .insert([{ gamer_tag: gamerTag, email: user.email }]);
+            if (error) throw error;
+            alert("Login berhasil!");
+        } else {
+            // Register
+            const { user, error } = await supabase.auth.signUp({
+                email: `${gamertag}@example.com`,
+                password: password,
+            });
 
-        if (dbError) throw dbError;
+            if (error) throw error;
 
-        alert("Registrasi berhasil!");
+            // Simpan data gamer ke database
+            const { data, error: dbError } = await supabase
+                .from('users')
+                .insert([{ gamer_tag: gamertag, email: user.email }]);
+
+            if (dbError) throw dbError;
+            alert("Registrasi berhasil!");
+        }
+
+        closeLoginPopup(); // Tutup popup setelah berhasil
     } catch (error) {
         alert("Terjadi kesalahan: " + error.message);
     }
 }
 
-// Fungsi untuk Login
-async function loginAccount() {
-    const gamerTag = document.getElementById("gamerTag").value;
-    const password = document.getElementById("password").value;
-
-    try {
-        const { user, error } = await supabase.auth.signInWithPassword({
-            email: `${gamerTag}@example.com`,
-            password: password
-        });
-
-        if (error) throw error;
-
-        alert("Login berhasil!");
-    } catch (error) {
-        alert("Terjadi kesalahan: " + error.message);
-    }
-}
-
-// Fungsi untuk menangani tombol Register
-document.getElementById("register-btn").addEventListener('click', registerAccount);
-
-// Fungsi untuk menangani tombol Login
-document.getElementById("login-btn").addEventListener('click', loginAccount);
+// Event listener untuk tombol Submit di popup
+document.querySelector('.popup-content button').addEventListener('click', submitAuth);
