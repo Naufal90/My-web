@@ -189,3 +189,6 @@ window.addEventListener('load', () => {
 
 // Event listener untuk tombol Submit di popup
 document.querySelector('.popup-content button').addEventListener('click', submitAuth);
+
+// Event listener untuk tombol "Tampilkan IP & Port Server"
+document.getElementById('server-info-btn').addEventListener('click', checkAuthBeforeShowServerInfo);
