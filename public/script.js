@@ -95,6 +95,32 @@ window.addEventListener('load', () => {
     fetchMinecraftStatus(); // Cek status server Bedrock di awal
 });
 
+// Fungsi untuk membuka popup Login/Register
+function openLoginPopup() {
+    const popup = document.getElementById('login-popup');
+    popup.style.display = 'flex'; // Menampilkan popup
+}
+
+// Fungsi untuk menutup popup Login/Register
+function closeLoginPopup() {
+    const popup = document.getElementById('login-popup');
+    popup.style.display = 'none'; // Menyembunyikan popup
+}
+
+// Fungsi untuk toggle antara mode Login dan Register
+function toggleAuthMode() {
+    const popupTitle = document.getElementById('popup-title');
+    const toggleAuthText = document.getElementById('toggle-auth');
+
+    if (popupTitle.innerText === 'Login') {
+        popupTitle.innerText = 'Register';
+        toggleAuthText.innerText = 'Sudah punya akun? Login';
+    } else {
+        popupTitle.innerText = 'Login';
+        toggleAuthText.innerText = 'Belum punya akun? Register';
+    }
+}
+
 // Fungsi untuk menangani tombol Submit (Login/Register)
 async function submitAuth() {
     const gamertag = document.getElementById("gamertag").value;
@@ -140,6 +166,9 @@ async function submitAuth() {
         alert("Terjadi kesalahan: " + error.message);
     }
 }
+
+// Event listener untuk tombol Login/Register
+document.querySelector('.btn[onclick="openLoginPopup()"]').addEventListener('click', openLoginPopup);
 
 // Event listener untuk tombol Submit di popup
 document.querySelector('.popup-content button').addEventListener('click', submitAuth);
