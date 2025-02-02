@@ -3,10 +3,16 @@ const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Server data dengan IP dan port
+const serverData = [
+    { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
+    { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
+];
+
 // Fungsi untuk memeriksa apakah pengguna sudah login
 function isUserLoggedIn() {
     const user = supabase.auth.user();
-    return !!user;
+    return !!user; // Kembalikan true jika pengguna sudah login
 }
 
 // Fungsi untuk memeriksa autentikasi sebelum menampilkan IP/Port Server
@@ -21,15 +27,9 @@ function checkAuthBeforeShowServerInfo() {
     }
 }
 
-// Server data dengan IP dan port hanya untuk Bedrock
-const serverData = [
-    { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
-    { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
-];
-
 // Fungsi untuk mendapatkan status server Minecraft
 async function fetchMinecraftStatus() {
-    const activeServer = serverData[0]; // Gunakan server Bedrock untuk memeriksa status (server[0])
+    const activeServer = serverData[0]; // Gunakan server pertama untuk memeriksa status
 
     try {
         const response = await fetch(`https://api.mcsrvstat.us/2/${activeServer.ip}:${activeServer.ports[0]}`);
@@ -77,41 +77,31 @@ function showServerInfo() {
     serverDetailsDiv.innerHTML = detailsHTML;
 }
 
-// Menonaktifkan tombol server-info saat halaman dimuat
-window.addEventListener('load', () => {
-    const button = document.querySelector('.server-info .btn');
-    if (button) button.disabled = false; // Menonaktifkan tombol
-});
-
-// Countdown event
-const eventDate = new Date("2025-02-02T15:00:00+07:00"); // 15:00 WIB (UTC+7)
-
-function updateCountdown() {
-    const now = new Date();
-    const timeLeft = eventDate - now;
-
-    if (timeLeft <= 0) {
-        document.getElementById("event-info").textContent = "⏳ Event telah dimulai! Selamat bermain!";
-        document.getElementById("countdown").textContent = "00:00:00";
-        document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event mulai
-    } else {
-        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-
-        document.getElementById("countdown").textContent = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
-    }
+// Fungsi untuk membuka popup Login/Register
+function openLoginPopup() {
+    const popup = document.getElementById('login-popup');
+    popup.style.display = 'flex'; // Menampilkan popup
 }
 
-// Jalankan countdown setiap detik
-setInterval(updateCountdown, 1000);
-updateCountdown();
+// Fungsi untuk menutup popup Login/Register
+function closeLoginPopup() {
+    const popup = document.getElementById('login-popup');
+    popup.style.display = 'none'; // Menyembunyikan popup
+}
 
-// Memuat status server saat halaman dibuka
-window.addEventListener('load', () => {
-    fetchMinecraftStatus(); // Cek status server Bedrock di awal
-});
+// Fungsi untuk toggle antara mode Login dan Register
+function toggleAuthMode() {
+    const popupTitle = document.getElementById('popup-title');
+    const toggleAuthText = document.getElementById('toggle-auth');
+
+    if (popupTitle.innerText === 'Login') {
+        popupTitle.innerText = 'Register';
+        toggleAuthText.innerText = 'Sudah punya akun? Login';
+    } else {
+        popupTitle.innerText = 'Login';
+        toggleAuthText.innerText = 'Belum punya akun? Register';
+    }
+}
 
 // Fungsi untuk menangani login/register
 async function submitAuth() {
@@ -166,3 +156,36 @@ async function submitAuth() {
         alert("Terjadi kesalahan: " + error.message);
     }
 }
+
+// Countdown event
+const eventDate = new Date("2025-02-02T15:00:00+07:00"); // 15:00 WIB (UTC+7)
+
+function updateCountdown() {
+    const now = new Date();
+    const timeLeft = eventDate - now;
+
+    if (timeLeft <= 0) {
+        document.getElementById("event-info").textContent = "⏳ Event telah dimulai! Selamat bermain!";
+        document.getElementById("countdown").textContent = "00:00:00";
+        document.getElementById("register-btn").style.display = "none"; // Sembunyikan tombol jika event mulai
+    } else {
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown").textContent = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
+    }
+}
+
+// Jalankan countdown setiap detik
+setInterval(updateCountdown, 1000);
+updateCountdown();
+
+// Memuat status server saat halaman dibuka
+window.addEventListener('load', () => {
+    fetchMinecraftStatus(); // Cek status server di awal
+});
+
+// Event listener untuk tombol Submit di popup
+document.querySelector('.popup-content button').addEventListener('click', submitAuth);
