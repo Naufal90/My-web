@@ -9,6 +9,18 @@ function isUserLoggedIn() {
     return !!user;
 }
 
+// Fungsi untuk memeriksa autentikasi sebelum menampilkan IP/Port Server
+function checkAuthBeforeShowServerInfo() {
+    if (isUserLoggedIn()) {
+        // Jika pengguna sudah login, tampilkan IP/Port Server
+        showServerInfo();
+    } else {
+        // Jika pengguna belum login, tampilkan peringatan dan popup login/register
+        alert("Anda harus login terlebih dahulu untuk melihat IP/Port Server.");
+        openLoginPopup(); // Buka popup Login/Register
+    }
+}
+
 // Server data dengan IP dan port hanya untuk Bedrock
 const serverData = [
     { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
