@@ -26,9 +26,9 @@
 
      <div class="server-info">
         <h2>Informasi Server</h2>
-        <button class="btn" id="server-info-btn">Tampilkan IP & Port Server</button>
+        <button class="btn" onclick="showServerInfo()">Tampilkan IP & Port Server</button>
         <div id="server-details" style="margin-top: 20px;"></div>
-    </div>
+     </div>
     
     <div class="player-list">
         <h2>Pemain Online</h2>
@@ -74,17 +74,20 @@
         <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok"><i class="fab fa-tiktok"></i></a>
     </div>
 
-    <!-- Popup Login/Register -->
-    <div id="login-popup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closeLoginPopup()">&times;</span>
-            <h2 id="popup-title">Login</h2>
-            <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
-            <input type="password" id="password" placeholder="Masukkan Password" required>
-            <button class="btn" onclick="submitAuth()">Submit</button>
-            <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
-        </div>
+    <!-- Tombol Login -->
+<button class="btn" onclick="openLoginPopup()">Login / Register</button>
+
+<!-- Popup Login/Register -->
+<div id="login-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closeLoginPopup()">&times;</span>
+        <h2 id="popup-title">Login</h2>
+        <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
+        <input type="password" id="password" placeholder="Masukkan Password" required>
+        <button class="btn" onclick="submitAuth()">Submit</button>
+        <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
     </div>
+</div>
     
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
