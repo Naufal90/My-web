@@ -1,6 +1,6 @@
 // Server data dengan IP dan port hanya untuk Bedrock
 const serverData = [
-    { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
+    { ip: "kimnetwork.mcsh.io", ports: [10255], type: "Java" },
     { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
 ];
 
