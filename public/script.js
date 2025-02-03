@@ -17,13 +17,12 @@ function isUserLoggedIn() {
 
 // Fungsi untuk memeriksa autentikasi sebelum menampilkan IP/Port Server
 function checkAuthBeforeShowServerInfo() {
+    console.log('checkAuthBeforeShowServerInfo called');
     if (isUserLoggedIn()) {
-        // Jika pengguna sudah login, tampilkan IP/Port Server
         showServerInfo();
     } else {
-        // Jika pengguna belum login, tampilkan peringatan dan popup login/register
         alert("Anda harus login terlebih dahulu untuk melihat IP/Port Server.");
-        openLoginPopup(); // Buka popup Login/Register
+        openLoginPopup();
     }
 }
 
