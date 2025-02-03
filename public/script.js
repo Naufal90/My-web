@@ -1,10 +1,7 @@
-// Pastikan Supabase sudah di-load sebelum digunakan
-if (typeof supabase === 'undefined') {
-    const { createClient } = supabase;
-    const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
-    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Kunci disembunyikan demi keamanan
-    var supabase = createClient(supabaseUrl, supabaseKey);
-}
+// Inisialisasi Supabase di bagian atas
+const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Kunci disembunyikan demi keamanan
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Server data dengan IP dan port
 const serverData = [
