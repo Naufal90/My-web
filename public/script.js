@@ -1,7 +1,10 @@
-// Konfigurasi Supabase
-const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Kunci disembunyikan demi keamanan
-const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+// Pastikan Supabase sudah di-load sebelum digunakan
+if (typeof supabase === 'undefined') {
+    const { createClient } = supabase;
+    const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Kunci disembunyikan demi keamanan
+    var supabase = createClient(supabaseUrl, supabaseKey);
+}
 
 // Server data dengan IP dan port
 const serverData = [
@@ -12,7 +15,7 @@ const serverData = [
 // Fungsi untuk memeriksa apakah pengguna sudah login
 async function isUserLoggedIn() {
     const { data, error } = await supabase.auth.getUser();
-    return data.user !== null; // Jika ada user, berarti sudah login
+    return data?.user !== null; // Pastikan data aman
 }
 
 // Fungsi untuk menampilkan informasi server jika pengguna sudah login
@@ -118,7 +121,10 @@ async function submitAuth() {
 
             if (error) throw error;
 
-            await supabase.from('users').insert([{ gamer_tag: gamertag, email: data.user.email }]);
+            if (data.user) {
+                await supabase.from('users').insert([{ gamer_tag: gamertag, email: data.user.email }]);
+            }
+
             alert("Registrasi berhasil!");
         }
 
