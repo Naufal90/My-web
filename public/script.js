@@ -1,4 +1,3 @@
-// Inisialisasi Supabase di bagian atas
 const supabase = supabase.createClient(
         "https://iafrlxyoeostvhnoywnv.supabase.co", // Ganti dengan URL proyekmu
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno" // Ganti dengan Anon Public Key proyekmu
