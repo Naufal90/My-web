@@ -1,20 +1,30 @@
+// Tambahkan Supabase Library jika belum ada
+if (typeof createClient === 'undefined') {
+    document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>');
+}
+
+// Inisialisasi Supabase
 const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno'; // Kunci disembunyikan demi keamanan
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno'; 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Server data dengan IP dan por
+// Data server Minecraft
 const serverData = [
     { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
     { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
 ];
 
-// Fungsi untuk memeriksa apakah pengguna sudah login
+// Cek apakah user sudah login
 async function isUserLoggedIn() {
     const { data, error } = await supabase.auth.getUser();
-    return data?.user !== null; // Pastikan data aman
+    if (error) {
+        console.error("Error Auth:", error);
+        return false;
+    }
+    return !!data.user;
 }
 
-// Fungsi untuk menampilkan informasi server jika pengguna sudah login
+// Tampilkan info server jika user login
 async function checkAuthBeforeShowServerInfo() {
     const loggedIn = await isUserLoggedIn();
     if (loggedIn) {
@@ -25,105 +35,75 @@ async function checkAuthBeforeShowServerInfo() {
     }
 }
 
-// Fungsi untuk mendapatkan status server Minecraft (Java & Bedrock)
+// Ambil status server Minecraft
 async function fetchMinecraftStatus() {
+    console.log("Memulai pengecekan status server...");
+    
     serverData.forEach(async (server) => {
         try {
             const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
-            if (response.ok) {
-                const data = await response.json();
-                const statusElement = document.getElementById("server-status");
-                const playerListElement = document.getElementById("player-list");
-                const playersStatusElement = document.getElementById("players-status");
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-                if (data.online) {
-                    statusElement.innerHTML += `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`;
+            const data = await response.json();
+            console.log(`Data server ${server.type}:`, data);
 
-                    if (data.players.list && data.players.list.length > 0) {
-                        playerListElement.innerHTML = "";
-                        data.players.list.forEach(player => {
-                            const playerItem = document.createElement("li");
-                            playerItem.textContent = player;
-                            playerListElement.appendChild(playerItem);
-                        });
-                    } else {
-                        playersStatusElement.innerHTML = `<p>Server ${server.type}: Tidak ada pemain online.</p>`;
-                    }
-                } else {
-                    statusElement.innerHTML += `<p>Server ${server.type}: Offline</p>`;
-                }
-            } else {
-                document.getElementById("server-status").innerHTML += `<p>Server ${server.type}: Gagal memuat status</p>`;
-            }
+            const statusElement = document.getElementById("server-status");
+            if (!statusElement) return console.error("Elemen server-status tidak ditemukan!");
+
+            statusElement.innerHTML += data.online
+                ? `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
+                : `<p>Server ${server.type}: Offline</p>`;
+
         } catch (error) {
-            document.getElementById("server-status").innerHTML += `<p>Server ${server.type}: Terjadi kesalahan (${error.message})</p>`;
+            console.error(`Gagal mengambil status server ${server.type}:`, error);
         }
     });
 }
 
-// Fungsi untuk menampilkan IP dan port server
+// Tampilkan informasi server
 function showServerInfo() {
     const serverDetailsDiv = document.getElementById("server-details");
-    if (!serverDetailsDiv) return;
+    if (!serverDetailsDiv) return console.error("Elemen server-details tidak ditemukan!");
 
-    let detailsHTML = '';
-    serverData.forEach(server => {
-        detailsHTML += `
-            <p><strong>IP Server ${server.type}:</strong> ${server.ip}</p>
-            <p><strong>Port Server ${server.type}:</strong> ${server.ports.join(', ')}</p>
-        `;
-    });
-    serverDetailsDiv.innerHTML = detailsHTML;
+    serverDetailsDiv.innerHTML = serverData.map(server =>
+        `<p><strong>IP Server ${server.type}:</strong> ${server.ip}</p>
+         <p><strong>Port Server ${server.type}:</strong> ${server.ports.join(', ')}</p>`
+    ).join('');
 }
 
-// Fungsi untuk membuka popup Login/Register
+// Popup login/register
 function openLoginPopup() {
-    const popup = document.getElementById('login-popup');
-    if (popup) popup.style.display = 'flex';
+    document.getElementById('login-popup')?.style.display = 'flex';
 }
-
-// Fungsi untuk menutup popup Login/Register
 function closeLoginPopup() {
-    const popup = document.getElementById('login-popup');
-    if (popup) popup.style.display = 'none';
+    document.getElementById('login-popup')?.style.display = 'none';
 }
 
-// Fungsi login/register dengan Supabase
+// Login/register dengan Supabase
 async function submitAuth() {
-    const gamertag = document.getElementById("gamertag").value;
-    const password = document.getElementById("password").value;
+    const gamertag = document.getElementById("gamertag")?.value;
+    const password = document.getElementById("password")?.value;
 
     if (!gamertag || !password) {
-        alert("Mohon isi GamerTag dan Password!");
-        return;
+        return alert("Mohon isi GamerTag dan Password!");
     }
 
-    const isLoginMode = document.getElementById("popup-title").innerText === "Login";
+    const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
+    const email = `${gamertag}@yourdomain.com`; // Gunakan domain asli, bukan @example.com
 
     try {
+        let data, error;
         if (isLoginMode) {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email: `${gamertag}@example.com`,
-                password: password,
-            });
-
-            if (error) throw error;
-            alert("Login berhasil!");
+            ({ data, error } = await supabase.auth.signInWithPassword({ email, password }));
         } else {
-            const { data, error } = await supabase.auth.signUp({
-                email: `${gamertag}@example.com`,
-                password: password,
-            });
-
-            if (error) throw error;
-
+            ({ data, error } = await supabase.auth.signUp({ email, password }));
             if (data.user) {
                 await supabase.from('users').insert([{ gamer_tag: gamertag, email: data.user.email }]);
             }
-
-            alert("Registrasi berhasil!");
         }
 
+        if (error) throw error;
+        alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil!");
         closeLoginPopup();
     } catch (error) {
         alert("Terjadi kesalahan: " + error.message);
