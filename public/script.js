@@ -1,7 +1,6 @@
-const supabase = supabase.createClient(
-        "https://iafrlxyoeostvhnoywnv.supabase.co", // Ganti dengan URL proyekmu
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno" // Ganti dengan Anon Public Key proyekmu
-    );
+const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno'; // Kunci disembunyikan demi keamanan
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Server data dengan IP dan port
 const serverData = [
