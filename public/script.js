@@ -1,15 +1,3 @@
-// Tambahkan Supabase Library jika belum ada
-if (typeof createClient === 'undefined') {
-    console.warn("[DEBUG] Supabase library belum ditemukan, mencoba memuat...");
-    document.write('<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"><\/script>');
-}
-
-// Inisialisasi Supabase
-const supabaseUrl = 'https://iafrlxyoeostvhnoywnv.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno'; // Sebaiknya jangan expose ini ke publik!
-const supabase = createClient(supabaseUrl, supabaseKey);
-console.log("[DEBUG] Supabase client berhasil diinisialisasi");
-
 // Data server Minecraft
 const serverData = [
     { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
@@ -19,13 +7,14 @@ const serverData = [
 // Cek apakah user sudah login
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
-    const { data, error } = await supabase.auth.getUser();
-    if (error) {
+    try {
+        const response = await fetch('http://localhost:3000/check-auth');
+        const data = await response.json();
+        return data.loggedIn;
+    } catch (error) {
         console.error("[ERROR] Gagal mengecek login:", error);
         return false;
     }
-    console.log("[DEBUG] User login status:", !!data.user);
-    return !!data.user;
 }
 
 // Tampilkan info server jika user login
@@ -96,7 +85,7 @@ function closeLoginPopup() {
     document.getElementById('login-popup')?.style.display = 'none';
 }
 
-// Login/register dengan Supabase
+// Login/register dengan backend
 async function submitAuth() {
     console.log("[DEBUG] Memulai proses login/register...");
     const gamertag = document.getElementById("gamertag")?.value;
@@ -108,25 +97,22 @@ async function submitAuth() {
     }
 
     const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
-    const email = `${gamertag}@yourdomain.com`;
 
     try {
-        let data, error;
-        if (isLoginMode) {
-            console.log("[DEBUG] Mode login, mencoba masuk...");
-            ({ data, error } = await supabase.auth.signInWithPassword({ email, password }));
-        } else {
-            console.log("[DEBUG] Mode registrasi, mencoba mendaftar...");
-            ({ data, error } = await supabase.auth.signUp({ email, password }));
-            if (data.user) {
-                console.log("[DEBUG] Registrasi berhasil, menyimpan ke database...");
-                await supabase.from('users').insert([{ gamer_tag: gamertag, email: data.user.email }]);
-            }
-        }
+        const endpoint = isLoginMode ? '/login' : '/register';
+        const response = await fetch(`http://localhost:3000${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ gamertag, password }),
+        });
+        const data = await response.json();
 
-        if (error) throw error;
-        alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil!");
-        closeLoginPopup();
+        if (response.ok) {
+            alert(data.message);
+            closeLoginPopup();
+        } else {
+            alert(data.error);
+        }
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
         alert("Terjadi kesalahan: " + error.message);
