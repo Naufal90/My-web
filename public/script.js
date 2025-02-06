@@ -1,14 +1,14 @@
 // Data server Minecraft
 const serverData = [
-    { ip: "kimnetwork.zapto.org", ports: [20607], type: "Java" },
-    { ip: "kimnetwork.zapto.org", ports: [20702], type: "Bedrock" }
+    { ip: "node-1.panelphyzx.my.id", ports: [25565], type: "Java" },
+    { ip: "node-1.panelphyzx.my.id", ports: [19132], type: "Bedrock" }
 ];
 
 // Cek apakah user sudah login
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('http://node-1.panelphyzx.my.id/check-auth');
+        const response = await fetch('http://node-1.panelphyzx.my.id:2015/check-auth');
         const data = await response.json();
         return data.loggedIn;
     } catch (error) {
@@ -100,7 +100,7 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const response = await fetch(`http://node-1.panelphyzx.my.id${endpoint}`, {
+        const response = await fetch(`http://node-1.panelphyzx.my.id:2015${endpoint}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ gamertag, password }),
