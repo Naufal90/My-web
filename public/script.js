@@ -8,7 +8,7 @@ const serverData = [
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('http://localhost:3000/check-auth');
+        const response = await fetch('http://node-1.panelphyzx.my.id/check-auth');
         const data = await response.json();
         return data.loggedIn;
     } catch (error) {
@@ -100,7 +100,7 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const response = await fetch(`http://localhost:3000${endpoint}`, {
+        const response = await fetch(`http://node-1.panelphyzx.my.id${endpoint}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ gamertag, password }),
