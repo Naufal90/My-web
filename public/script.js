@@ -4,15 +4,27 @@ const serverData = [
     { ip: "node-1.panelphyzx.my.id", ports: [19132], type: "Bedrock" }
 ];
 
+// Utility function untuk menampilkan pesan error
+function showError(message) {
+    const errorElement = document.getElementById("error-message");
+    if (errorElement) {
+        errorElement.textContent = message;
+    } else {
+        console.error("[ERROR] Elemen error-message tidak ditemukan!");
+    }
+}
+
 // Cek apakah user sudah login
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
         const response = await fetch('http://node-1.panelphyzx.my.id:2015/check-auth');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         return data.loggedIn;
     } catch (error) {
         console.error("[ERROR] Gagal mengecek login:", error);
+        showError("Gagal mengecek status login. Silakan coba lagi.");
         return false;
     }
 }
@@ -26,7 +38,7 @@ async function checkAuthBeforeShowServerInfo() {
         showServerInfo();
     } else {
         console.warn("[WARNING] User belum login, menampilkan popup login.");
-        alert("Anda harus login terlebih dahulu untuk melihat IP/Port Server.");
+        showError("Anda harus login terlebih dahulu untuk melihat IP/Port Server.");
         openLoginPopup();
     }
 }
@@ -35,7 +47,7 @@ async function checkAuthBeforeShowServerInfo() {
 async function fetchMinecraftStatus() {
     console.log("[DEBUG] Memulai pengecekan status server...");
 
-    serverData.forEach(async (server) => {
+    for (const server of serverData) {
         try {
             console.log(`[DEBUG] Mengambil status server ${server.type} di ${server.ip}:${server.ports[0]}...`);
             const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
@@ -56,8 +68,9 @@ async function fetchMinecraftStatus() {
 
         } catch (error) {
             console.error(`[ERROR] Gagal mengambil status server ${server.type}:`, error);
+            showError(`Gagal mengambil status server ${server.type}. Silakan coba lagi.`);
         }
-    });
+    }
 }
 
 // Tampilkan informasi server
@@ -78,11 +91,22 @@ function showServerInfo() {
 // Popup login/register
 function openLoginPopup() {
     console.log("[DEBUG] Membuka popup login...");
-    document.getElementById('login-popup')?.style.display = 'flex';
+    const loginPopupElement = document.getElementById('login-popup');
+    if (!loginPopupElement) {
+        console.error("[ERROR] Elemen login-popup tidak ditemukan!");
+        return;
+    }
+    loginPopupElement.style.display = 'flex';
 }
+
 function closeLoginPopup() {
     console.log("[DEBUG] Menutup popup login...");
-    document.getElementById('login-popup')?.style.display = 'none';
+    const loginPopupElement = document.getElementById('login-popup');
+    if (!loginPopupElement) {
+        console.error("[ERROR] Elemen login-popup tidak ditemukan!");
+        return;
+    }
+    loginPopupElement.style.display = 'none';
 }
 
 // Login/register dengan backend
@@ -93,7 +117,8 @@ async function submitAuth() {
 
     if (!gamertag || !password) {
         console.warn("[WARNING] GamerTag atau Password belum diisi.");
-        return alert("Mohon isi GamerTag dan Password!");
+        showError("Mohon isi GamerTag dan Password!");
+        return;
     }
 
     const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
@@ -111,11 +136,11 @@ async function submitAuth() {
             alert(data.message);
             closeLoginPopup();
         } else {
-            alert(data.error);
+            showError(data.error);
         }
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
-        alert("Terjadi kesalahan: " + error.message);
+        showError("Terjadi kesalahan: " + error.message);
     }
 }
 
@@ -124,16 +149,21 @@ const eventDate = new Date("2025-02-02T15:00:00+07:00");
 
 function updateCountdown() {
     const countdownElement = document.getElementById("countdown");
-    if (!countdownElement) return console.error("[ERROR] Elemen countdown tidak ditemukan!");
+    const eventInfoElement = document.getElementById("event-info");
+    const registerBtnElement = document.getElementById("register-btn");
+
+    if (!countdownElement || !eventInfoElement || !registerBtnElement) {
+        return console.error("[ERROR] Elemen countdown, event-info, atau register-btn tidak ditemukan!");
+    }
 
     const now = new Date();
     const timeLeft = eventDate - now;
 
     if (timeLeft <= 0) {
         console.log("[DEBUG] Event telah dimulai.");
-        document.getElementById("event-info").textContent = "⏳ Event telah dimulai! Selamat bermain!";
+        eventInfoElement.textContent = "⏳ Event telah dimulai! Selamat bermain!";
         countdownElement.textContent = "00:00:00";
-        document.getElementById("register-btn")?.style.display = "none";
+        registerBtnElement.style.display = "none";
     } else {
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -152,6 +182,11 @@ updateCountdown();
 window.addEventListener('load', fetchMinecraftStatus);
 
 // Event listener untuk tombol "Tampilkan IP & Port Server"
-document.getElementById('server-info-btn')?.addEventListener('click', checkAuthBeforeShowServerInfo);
+const serverInfoBtn = document.getElementById('server-info-btn');
+if (!serverInfoBtn) {
+    console.error("[ERROR] Elemen server-info-btn tidak ditemukan!");
+} else {
+    serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
+}
 
 console.log("[DEBUG] Script selesai dimuat.");
