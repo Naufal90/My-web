@@ -48,6 +48,7 @@ async function fetchMinecraftStatus() {
     console.log("[DEBUG] Memulai pengecekan status server...");
 
     for (const server of serverData) {
+        if (server.type === "java") {
         try {
             console.log(`[DEBUG] Mengambil status server ${server.type} di ${server.ip}:${server.ports[0]}...`);
             const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
@@ -130,7 +131,9 @@ async function submitAuth() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ gamertag, password }),
         });
+        console.log("[DEBUG] Respons dari backend:", response); // Debug respons
         const data = await response.json();
+        console.log("[DEBUG] Data dari backend:", data); // Debug data
 
         if (response.ok) {
             alert(data.message);
