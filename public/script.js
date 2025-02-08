@@ -48,7 +48,7 @@ async function fetchMinecraftStatus() {
     console.log("[DEBUG] Memulai pengecekan status server...");
 
     for (const server of serverData) {
-        if (server.type === "java") {
+       // if (server.type === "java") {
         try {
             console.log(`[DEBUG] Mengambil status server ${server.type} di ${server.ip}:${server.ports[0]}...`);
             const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
