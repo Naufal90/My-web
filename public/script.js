@@ -48,28 +48,32 @@ async function fetchMinecraftStatus() {
     console.log("[DEBUG] Memulai pengecekan status server...");
 
     for (const server of serverData) {
-       // if (server.type === "java") {
-        try {
-            console.log(`[DEBUG] Mengambil status server ${server.type} di ${server.ip}:${server.ports[0]}...`);
-            const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        // Cek jika server adalah versi Java
+        if (server.type === "Java") {
+            try {
+                console.log(`[DEBUG] Mengambil status server ${server.type} di ${server.ip}:${server.ports[0]}...`);
+                const response = await fetch(`https://api.mcsrvstat.us/2/${server.ip}:${server.ports[0]}`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-            const data = await response.json();
-            console.log(`[DEBUG] Data server ${server.type}:`, data);
+                const data = await response.json();
+                console.log(`[DEBUG] Data server ${server.type}:`, data);
 
-            const statusElement = document.getElementById("server-status");
-            if (!statusElement) {
-                console.error("[ERROR] Elemen server-status tidak ditemukan!");
-                return;
+                const statusElement = document.getElementById("server-status");
+                if (!statusElement) {
+                    console.error("[ERROR] Elemen server-status tidak ditemukan!");
+                    return;
+                }
+
+                statusElement.innerHTML += data.online
+                    ? `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
+                    : `<p>Server ${server.type}: Offline</p>`;
+
+            } catch (error) {
+                console.error(`[ERROR] Gagal mengambil status server ${server.type}:`, error);
+                showError(`Gagal mengambil status server ${server.type}. Silakan coba lagi.`);
             }
-
-            statusElement.innerHTML += data.online
-                ? `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
-                : `<p>Server ${server.type}: Offline</p>`;
-
-        } catch (error) {
-            console.error(`[ERROR] Gagal mengambil status server ${server.type}:`, error);
-            showError(`Gagal mengambil status server ${server.type}. Silakan coba lagi.`);
+        } else {
+            console.log(`[DEBUG] Server ${server.type} diabaikan karena bukan versi Java.`);
         }
     }
 }
