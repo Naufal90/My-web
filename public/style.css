@@ -8,6 +8,64 @@ body {
     transition: all 0.3s ease;
 }
 
+/* Header */
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.server-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.header-left h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.header-right .btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #555;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.header-right .btn:hover {
+    background-color: #777;
+}
+
+/* Footer */
+footer {
+    background-color: #222;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
 .status, .donation, .server-info, .player-list, .event {
     margin: 20px auto;
     padding: 20px;
