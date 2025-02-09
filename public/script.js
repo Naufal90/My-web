@@ -19,7 +19,7 @@ async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
         const response = await fetch('139.59.253.213:2015/check-auth');
-        if (!response.ok) throw new Error(`HTTPS ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         return data.loggedIn;
     } catch (error) {
