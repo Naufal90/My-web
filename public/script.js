@@ -158,7 +158,7 @@ async function submitAuth() {
         console.log("[DEBUG] Data yang dikirim:", body);
 
         const response = await fetch(url, {
-            method: 'POST',
+            method: 'GET',
             headers: { 'Content-Type': 'application/json' },
             body: body,
         });
