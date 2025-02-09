@@ -68,8 +68,8 @@ async function fetchMinecraftStatus() {
 
                 // Tampilkan status server
                 statusElement.innerHTML += data.online
-                    ? `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
-                    : `<p>Server ${server.type}: Offline</p>`;
+                    ? `<p>Server : Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
+                    : `<p>Server : Offline</p>`;
 
                 // Tampilkan daftar pemain jika server online
                 if (data.online && data.players.list) {
