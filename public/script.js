@@ -18,7 +18,7 @@ function showError(message) {
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('https://node-1.panelphyzx.my.id:2015/check-auth');
+        const response = await fetch('139.59.253.213:2015/check-auth');
         if (!response.ok) throw new Error(`HTTPS ${response.status}`);
         const data = await response.json();
         return data.loggedIn;
@@ -166,7 +166,7 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const url = `https://node-1.panelphyzx.my.id:2015${endpoint}`;
+        const url = `139.59.253.213:2015${endpoint}`;
         const body = JSON.stringify({ gamertag, password });
 
         console.log("[DEBUG] Mengirim request ke:", url);
