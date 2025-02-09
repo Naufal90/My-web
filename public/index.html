@@ -19,72 +19,100 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="status">
-        <h1>Status Server KimNetwork</h1>
-        <p id="server-status"></p>
-    </div>
-
-     <div class="server-info">
-        <h2>Informasi Server</h2>
-        <button class="btn" id="server-info-btn">Tampilkan IP & Port Server</button>
-        <div id="server-details" style="margin-top: 20px;"></div>
-     </div>
-    
-    <div class="player-list">
-        <h2>Pemain Online</h2>
-        <p id="players-status"></p>
-        <ul id="player-list"></ul>
-    </div>
-
-    <div class="event">
-        <h2>🎉 Event Minecraft: Build Competition 🏆</h2>
-        <p id="event-info">Ayo tunjukkan kreativitasmu dalam event Build Competition! Menangkan hadiah menarik dan jadilah yang terbaik!</p>
-        
-        <div class="event-details">
-            <p><strong>📅 Tanggal:</strong> 2 Februari 2025</p>
-            <p><strong>🕒 Waktu:</strong> 13:00 WIB</p>
-            <p><strong>🎁 Hadiah:</strong></p>
-            <div class="rewards">
-                <div class="reward-item">
-                    <strong>Juara 1:</strong> Rank Builder
-                </div>
-                <div class="reward-item">
-                    <strong>Juara 2:</strong> Uang Server 15k dan 2 Mending Book
-                </div>
-                <div class="reward-item">
-                    <strong>Juara 3:</strong> Uang Server 8k dan 1 Sharpness Book Level 4
-                </div>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <!-- Pojok Kiri: Nama Server dan Ikon -->
+            <div class="header-left">
+                <img src="https://imgur.com/a/21sc4oB" alt="Server Icon" class="server-icon">
+                <h1>KimNetwork</h1>
             </div>
-            <p><strong>⏳ Waktu tersisa:</strong> <span id="countdown"></span></p>
+
+            <!-- Pojok Kanan: Tombol Login dan Register -->
+            <div class="header-right">
+                <button class="btn" onclick="openLoginPopup()">Login</button>
+                <button class="btn" onclick="toggleAuthMode()">Register</button>
+            </div>
         </div>
-        <a id="register-btn" class="btn" href="https://forms.gle/xm952kB5iK1D39TQ6" target="_blank">Daftar Sekarang</a>
-    </div>
+    </header>
 
-    <div class="donation">
-        <h2>Ingin Mendukung Kami?</h2>
-        <p>Klik link di bawah ini untuk memberikan donasi:</p>
-        <a class="btn" href="https://sociabuzz.com/kimnetwork/tribe" target="_blank">Donasi Sekarang</a>
-    </div>
-
-    <!-- Ikon Media Sosial -->
-    <div class="social-icons">
-        <h2>Ikuti Kami</h2>
-        <a href="https://chat.whatsapp.com/Hu9aQJF66j5C1Q55m77wVG" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://discord.com/invite/QMyFFsEk" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
-        <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok"><i class="fab fa-tiktok"></i></a>
-    </div>
-
-     <!-- Popup Login/Register -->
-    <div id="login-popup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closeLoginPopup()">&times;</span>
-            <h2 id="popup-title">Login</h2>
-            <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
-            <input type="password" id="password" placeholder="Masukkan Password" required>
-            <button class="btn" onclick="submitAuth()">Submit</button>
-            <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
+    <!-- Konten Utama -->
+    <main>
+        <div class="status" id="status">
+            <h1>Status Server KimNetwork</h1>
+            <p id="server-status">Memuat status server...</p>
         </div>
-    </div>
+
+        <div class="server-info" id="server-info">
+            <h2>Informasi Server</h2>
+            <button class="btn" id="server-info-btn">Tampilkan IP & Port Server</button>
+            <div id="server-details" style="margin-top: 20px;"></div>
+        </div>
+        
+        <div class="player-list">
+            <h2>Pemain Online</h2>
+            <p id="players-status">Memuat daftar pemain...</p>
+            <ul id="player-list"></ul>
+        </div>
+
+        <div class="event" id="event">
+            <h2>🎉 Event Minecraft: Build Competition 🏆</h2>
+            <p id="event-info">Ayo tunjukkan kreativitasmu dalam event Build Competition! Menangkan hadiah menarik dan jadilah yang terbaik!</p>
+            
+            <div class="event-details">
+                <p><strong>📅 Tanggal:</strong> 2 Februari 2025</p>
+                <p><strong>🕒 Waktu:</strong> 13:00 WIB</p>
+                <p><strong>🎁 Hadiah:</strong></p>
+                <div class="rewards">
+                    <div class="reward-item">
+                        <strong>Juara 1:</strong> Rank Builder
+                    </div>
+                    <div class="reward-item">
+                        <strong>Juara 2:</strong> Uang Server 15k dan 2 Mending Book
+                    </div>
+                    <div class="reward-item">
+                        <strong>Juara 3:</strong> Uang Server 8k dan 1 Sharpness Book Level 4
+                    </div>
+                </div>
+                <p><strong>⏳ Waktu tersisa:</strong> <span id="countdown"></span></p>
+            </div>
+            <a id="register-btn" class="btn" href="https://forms.gle/xm952kB5iK1D39TQ6" target="_blank">Daftar Sekarang</a>
+        </div>
+
+        <div class="donation" id="donation">
+            <h2>Ingin Mendukung Kami?</h2>
+            <p>Klik link di bawah ini untuk memberikan donasi:</p>
+            <a class="btn" href="https://sociabuzz.com/kimnetwork/tribe" target="_blank">Donasi Sekarang</a>
+        </div>
+
+        <!-- Ikon Media Sosial -->
+        <div class="social-icons">
+            <h2>Ikuti Kami</h2>
+            <a href="https://chat.whatsapp.com/Hu9aQJF66j5C1Q55m77wVG" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://discord.com/invite/QMyFFsEk" target="_blank" title="Discord"><i class="fab fa-discord"></i></a>
+            <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok"><i class="fab fa-tiktok"></i></a>
+        </div>
+
+        <!-- Popup Login/Register -->
+        <div id="login-popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closeLoginPopup()">&times;</span>
+                <h2 id="popup-title">Login</h2>
+                <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
+                <input type="password" id="password" placeholder="Masukkan Password" required>
+                <button class="btn" onclick="submitAuth()">Submit</button>
+                <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 KimNetwork. All rights reserved.</p>
+            <a href="#terms-of-service">Syarat & Ketentuan</a>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
