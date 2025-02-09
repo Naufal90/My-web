@@ -18,7 +18,7 @@ function showError(message) {
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('http://139.59.253.213:2015/check-auth');
+        const response = await fetch('http://backendkim.zapto.org:2015/check-auth');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
         return data.loggedIn;
@@ -166,7 +166,7 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const url = `http://139.59.253.213:2015${endpoint}`;
+        const url = `http://backendkim.zapto.org:2015${endpoint}`;
         const body = JSON.stringify({ gamertag, password });
 
         console.log("[DEBUG] Mengirim request ke:", url);
