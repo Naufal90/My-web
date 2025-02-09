@@ -59,14 +59,29 @@ async function fetchMinecraftStatus() {
                 console.log(`[DEBUG] Data server ${server.type}:`, data);
 
                 const statusElement = document.getElementById("server-status");
-                if (!statusElement) {
-                    console.error("[ERROR] Elemen server-status tidak ditemukan!");
+                const playersStatusElement = document.getElementById("players-status"); // Elemen untuk daftar pemain
+
+                if (!statusElement || !playersStatusElement) {
+                    console.error("[ERROR] Elemen server-status atau players-status tidak ditemukan!");
                     return;
                 }
 
+                // Tampilkan status server
                 statusElement.innerHTML += data.online
                     ? `<p>Server ${server.type}: Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
                     : `<p>Server ${server.type}: Offline</p>`;
+
+                // Tampilkan daftar pemain jika server online
+                if (data.online && data.players.list) {
+                    playersStatusElement.innerHTML = `
+                        <h3>Pemain Online:</h3>
+                        <ul>
+                            ${data.players.list.map(player => `<li>${player}</li>`).join('')}
+                        </ul>
+                    `;
+                } else {
+                    playersStatusElement.innerHTML = `<p>Tidak ada pemain online.</p>`;
+                }
 
             } catch (error) {
                 console.error(`[ERROR] Gagal mengambil status server ${server.type}:`, error);
