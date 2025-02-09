@@ -114,6 +114,7 @@ function closeLoginPopup() {
     loginPopupElement.style.display = 'none';
 }
 
+// Toggle antara mode Login dan Register
 function toggleAuthMode() {
     const popupTitle = document.getElementById("popup-title");
     const submitButton = document.querySelector(".btn"); // Tombol Submit
@@ -150,14 +151,26 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const response = await fetch(`http://node-1.panelphyzx.my.id:2015${endpoint}`, {
+        const url = `http://node-1.panelphyzx.my.id:2015${endpoint}`;
+        const body = JSON.stringify({ gamertag, password });
+
+        console.log("[DEBUG] Mengirim request ke:", url);
+        console.log("[DEBUG] Data yang dikirim:", body);
+
+        const response = await fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ gamertag, password }),
+            body: body,
         });
-        console.log("[DEBUG] Respons dari backend:", response); // Debug respons
+
+        console.log("[DEBUG] Respons dari backend:", response);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
         const data = await response.json();
-        console.log("[DEBUG] Data dari backend:", data); // Debug data
+        console.log("[DEBUG] Data dari backend:", data);
 
         if (response.ok) {
             alert(data.message);
