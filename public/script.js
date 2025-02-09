@@ -18,8 +18,8 @@ function showError(message) {
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('http://node-1.panelphyzx.my.id:2015/check-auth');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const response = await fetch('https://node-1.panelphyzx.my.id:2015/check-auth');
+        if (!response.ok) throw new Error(`HTTPS ${response.status}`);
         const data = await response.json();
         return data.loggedIn;
     } catch (error) {
@@ -166,7 +166,7 @@ async function submitAuth() {
 
     try {
         const endpoint = isLoginMode ? '/login' : '/register';
-        const url = `http://node-1.panelphyzx.my.id:2015${endpoint}`;
+        const url = `https://node-1.panelphyzx.my.id:2015${endpoint}`;
         const body = JSON.stringify({ gamertag, password });
 
         console.log("[DEBUG] Mengirim request ke:", url);
