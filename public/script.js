@@ -117,7 +117,7 @@ function closeLoginPopup() {
 // Toggle antara mode Login dan Register
 function toggleAuthMode() {
     const popupTitle = document.getElementById("popup-title");
-    const submitButton = document.querySelector(".btn"); // Tombol Submit
+    //const submitButton = document.querySelector(".btn"); // Tombol Submit
     const toggleAuthText = document.getElementById("toggle-auth");
 
     // Cek mode saat ini
@@ -126,11 +126,11 @@ function toggleAuthMode() {
     // Toggle antara mode Login dan Register
     if (isLoginMode) {
         popupTitle.innerText = "Register"; // Ubah judul ke "Register"
-        submitButton.innerText = "Register"; // Ubah teks tombol ke "Register"
+        //submitButton.innerText = "Register"; // Ubah teks tombol ke "Register"
         toggleAuthText.innerHTML = 'Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a>';
     } else {
         popupTitle.innerText = "Login"; // Ubah judul ke "Login"
-        submitButton.innerText = "Login"; // Ubah teks tombol ke "Login"
+        //submitButton.innerText = "Login"; // Ubah teks tombol ke "Login"
         toggleAuthText.innerHTML = 'Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a>';
     }
 }
