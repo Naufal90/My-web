@@ -31,10 +31,11 @@
 
             <!-- Pojok Kanan: Tombol Login dan Register -->
             <div class="header-right">
-                <button class="btn" onclick="openLoginPopup()">Login</button>
-                <button class="btn" onclick="toggleAuthMode()">Register</button>
+            <button class="btn" onclick="openLoginPopup('login')">Login</button>
+            <button class="btn" onclick="openLoginPopup('register')">Register</button>
             </div>
         </div>
+    </div>
     </header>
 
     <!-- Konten Utama -->
@@ -103,16 +104,29 @@
         </div>
 
         <!-- Popup Login/Register -->
-        <div id="login-popup" class="popup">
-            <div class="popup-content">
-                <span class="close" onclick="closeLoginPopup()">&times;</span>
-                <h2 id="popup-title">Login</h2>
-                <input type="email" id="email" placeholder="Masukkan Email" required>
-                <input type="password" id="password" placeholder="Masukkan Password" required>
-                <button class="btn" onclick="submitAuth()">Submit</button>
-                <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
-            </div>
+<div id="login-popup" class="popup">
+    <div class="popup-content">
+        <span class="close" onclick="closeLoginPopup()">&times;</span>
+        
+        <!-- Form Login -->
+        <div id="login-form">
+            <h2 id="popup-title">Login</h2>
+<input type="email" id="login-email" placeholder="Masukkan Email" required>
+            <input type="password" id="login-password" placeholder="Masukkan Password" required>
+            <button class="btn" onclick="login()">Login</button>
+            <p id="toggle-auth" onclick="toggleAuthMode('register')">Belum punya akun? Register</p>
         </div>
+
+        <!-- Form Register -->
+        <div id="register-form" style="display: none;">
+            <h2 id="popup-title">Register</h2>
+            <input type="email" id="register-email" placeholder="Masukkan Email" required>
+            <input type="password" id="register-password" placeholder="Masukkan Password" required>
+            <button class="btn" onclick="register()">Register</button>
+            <p id="toggle-auth" onclick="toggleAuthMode('login')">Sudah punya akun? Login</p>
+        </div>
+    </div>
+</div>
     </main>
 
     <!-- Footer -->
