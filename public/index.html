@@ -15,6 +15,7 @@
     <meta name="twitter:image" content="https://imgur.com/cgDgJHV.png">
     <meta name="twitter:url" content="https://naufal90.github.io/My-web">
     <title>Status Server KimNetwork</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -38,23 +39,30 @@
 
     <!-- Konten Utama -->
     <main>
+        <!-- Pesan Error -->
+        <div id="error-message" style="color: red; text-align: center; margin: 10px 0;"></div>
+
+        <!-- Status Server -->
         <div class="status" id="status">
             <h1>Status Server KimNetwork</h1>
             <p id="server-status">Memuat status server...</p>
         </div>
 
+        <!-- Informasi Server -->
         <div class="server-info" id="server-info">
             <h2>Informasi Server</h2>
             <button class="btn" id="server-info-btn">Tampilkan IP & Port Server</button>
             <div id="server-details" style="margin-top: 20px;"></div>
         </div>
-        
+
+        <!-- Daftar Pemain Online -->
         <div class="player-list">
             <h2>Pemain Online</h2>
             <p id="players-status">Memuat daftar pemain...</p>
             <ul id="player-list"></ul>
         </div>
 
+        <!-- Event -->
         <div class="event" id="event">
             <h2>🎉 Event Minecraft: Build Competition 🏆</h2>
             <p id="event-info">Ayo tunjukkan kreativitasmu dalam event Build Competition! Menangkan hadiah menarik dan jadilah yang terbaik!</p>
@@ -79,6 +87,7 @@
             <a id="register-btn" class="btn" href="https://forms.gle/xm952kB5iK1D39TQ6" target="_blank">Daftar Sekarang</a>
         </div>
 
+        <!-- Donasi -->
         <div class="donation" id="donation">
             <h2>Ingin Mendukung Kami?</h2>
             <p>Klik link di bawah ini untuk memberikan donasi:</p>
@@ -98,7 +107,7 @@
             <div class="popup-content">
                 <span class="close" onclick="closeLoginPopup()">&times;</span>
                 <h2 id="popup-title">Login</h2>
-                <input type="text" id="gamertag" placeholder="Masukkan GamerTag Minecraft" required>
+                <input type="email" id="email" placeholder="Masukkan Email" required>
                 <input type="password" id="password" placeholder="Masukkan Password" required>
                 <button class="btn" onclick="submitAuth()">Submit</button>
                 <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? Register</p>
@@ -114,6 +123,7 @@
         </div>
     </footer>
 
+    <!-- Script -->
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script>
