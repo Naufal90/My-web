@@ -1,3 +1,12 @@
+// Inisialisasi Supabase Client
+const SUPABASE_URL = "https://iafrlxyoeostvhnoywnv.supabase.co"; // Ganti dengan URL Supabase kamu
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno"; // Ganti dengan API Key Supabase kamu
+
+document.addEventListener("DOMContentLoaded", async () => {
+    window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
+});
+
 // Data server Minecraft
 const serverData = [
     { ip: "node-1.panelphyzx.my.id", ports: [25565], type: "Java" },
@@ -18,10 +27,9 @@ function showError(message) {
 async function isUserLoggedIn() {
     console.log("[DEBUG] Mengecek status login user...");
     try {
-        const response = await fetch('http://backendkim.zapto.org:2015/check-auth');
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        const data = await response.json();
-        return data.loggedIn;
+        const { data, error } = await supabase.auth.getUser();
+        if (error) throw error;
+        return !!data.user;
     } catch (error) {
         console.error("[ERROR] Gagal mengecek login:", error);
         showError("Gagal mengecek status login. Silakan coba lagi.");
@@ -132,7 +140,6 @@ function closeLoginPopup() {
 // Toggle antara mode Login dan Register
 function toggleAuthMode() {
     const popupTitle = document.getElementById("popup-title");
-    //const submitButton = document.querySelector(".btn"); // Tombol Submit
     const toggleAuthText = document.getElementById("toggle-auth");
 
     // Cek mode saat ini
@@ -141,61 +148,56 @@ function toggleAuthMode() {
     // Toggle antara mode Login dan Register
     if (isLoginMode) {
         popupTitle.innerText = "Register"; // Ubah judul ke "Register"
-        //submitButton.innerText = "Register"; // Ubah teks tombol ke "Register"
         toggleAuthText.innerHTML = 'Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a>';
     } else {
         popupTitle.innerText = "Login"; // Ubah judul ke "Login"
-        //submitButton.innerText = "Login"; // Ubah teks tombol ke "Login"
         toggleAuthText.innerHTML = 'Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a>';
     }
 }
 
-// Login/register dengan backend
+// Login/register dengan Supabase
 async function submitAuth() {
     console.log("[DEBUG] Memulai proses login/register...");
-    const gamertag = document.getElementById("gamertag")?.value;
+    const email = document.getElementById("email")?.value;
     const password = document.getElementById("password")?.value;
 
-    if (!gamertag || !password) {
-        console.warn("[WARNING] GamerTag atau Password belum diisi.");
-        showError("Mohon isi GamerTag dan Password!");
+    if (!email || !password) {
+        console.warn("[WARNING] Email atau Password belum diisi.");
+        showError("Mohon isi Email dan Password!");
         return;
     }
 
     const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
 
     try {
-        const endpoint = isLoginMode ? '/login' : '/register';
-        const url = `http://backendkim.zapto.org:2015${endpoint}`;
-        const body = JSON.stringify({ gamertag, password });
-
-        console.log("[DEBUG] Mengirim request ke:", url);
-        console.log("[DEBUG] Data yang dikirim:", body);
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: body,
-        });
-
-        console.log("[DEBUG] Respons dari backend:", response);
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log("[DEBUG] Data dari backend:", data);
-
-        if (response.ok) {
-            alert(data.message);
-            closeLoginPopup();
+        let response;
+        if (isLoginMode) {
+            response = await supabase.auth.signInWithPassword({ email, password });
         } else {
-            showError(data.error);
+            response = await supabase.auth.signUp({ email, password });
         }
+
+        if (response.error) {
+            throw response.error;
+        }
+
+        alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil! Silakan cek email Anda untuk verifikasi.");
+        closeLoginPopup();
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
         showError("Terjadi kesalahan: " + error.message);
+    }
+}
+
+// Logout dengan Supabase
+async function logout() {
+    try {
+        const { error } = await supabase.auth.signOut();
+        if (error) throw error;
+        alert("Logout berhasil!");
+    } catch (error) {
+        console.error("[ERROR] Logout gagal:", error);
+        showError("Terjadi kesalahan saat logout.");
     }
 }
 
