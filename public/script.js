@@ -5,7 +5,29 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 document.addEventListener("DOMContentLoaded", async () => {
     window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
+    await updateHeader(); // Perbarui header saat halaman dimuat
 });
+
+// Fungsi untuk memperbarui header berdasarkan status login
+async function updateHeader() {
+    const authButtons = document.getElementById("auth-buttons");
+    const userInfo = document.getElementById("user-info");
+    const userEmail = document.getElementById("user-email");
+
+    // Cek status login
+    const { data, error } = await supabase.auth.getSession();
+
+    if (data.session) {
+        // Jika pengguna sudah login
+        authButtons.style.display = "none"; // Sembunyikan tombol login/register
+        userInfo.style.display = "flex"; // Tampilkan info pengguna dan tombol logout
+        userEmail.textContent = data.session.user.email; // Tampilkan email pengguna
+    } else {
+        // Jika pengguna belum login
+        authButtons.style.display = "block"; // Tampilkan tombol login/register
+        userInfo.style.display = "none"; // Sembunyikan info pengguna dan tombol logout
+    }
+}
 
 // Data server Minecraft
 const serverData = [
@@ -183,6 +205,7 @@ async function submitAuth() {
 
         alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil! Silakan cek email Anda untuk verifikasi.");
         closeLoginPopup();
+        await updateHeader(); // Perbarui header setelah login/register
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
         showError("Terjadi kesalahan: " + error.message);
@@ -194,7 +217,9 @@ async function logout() {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
+
         alert("Logout berhasil!");
+        await updateHeader(); // Perbarui header setelah logout
     } catch (error) {
         console.error("[ERROR] Logout gagal:", error);
         showError("Terjadi kesalahan saat logout.");
