@@ -14,6 +14,12 @@ async function updateHeader() {
     const userInfo = document.getElementById("user-info");
     const userEmail = document.getElementById("user-email");
 
+    // Pastikan elemen ada sebelum mengakses properti style
+    if (!authButtons || !userInfo || !userEmail) {
+        console.error("[ERROR] Elemen header tidak ditemukan!");
+        return;
+    }
+
     // Cek status login
     const { data, error } = await supabase.auth.getSession();
 
