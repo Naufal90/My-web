@@ -69,6 +69,31 @@ header {
     transform: translateY(-3px);
 }
 
+/* Styling untuk Info Pengguna dan Tombol Logout */
+#user-info {
+    display: flex;
+    align-items: center;
+}
+
+#user-email {
+    color: #fff;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.btn-logout {
+    background-color: #ff4d4d;
+    border: 2px solid #fff;
+    color: #fff;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: #cc0000;
+    transform: translateY(-3px);
+}
+
 /* Footer Styling */
 footer {
     background: linear-gradient(90deg, #1e3c72, #2a5298);
