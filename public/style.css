@@ -8,64 +8,114 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Header */
+/* Header Styling */
 header {
-    background-color: #333;
-    color: #fff;
-    padding: 10px 20px;
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    padding: 15px 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .header-left {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .server-icon {
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    transition: transform 0.3s ease;
+}
+
+.server-icon:hover {
+    transform: rotate(360deg);
 }
 
 .header-left h1 {
+    font-size: 24px;
+    color: #fff;
     margin: 0;
-    font-size: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.header-right .btn {
-    margin-left: 10px;
-    padding: 5px 10px;
-    background-color: #555;
-    border: none;
+.header-right {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-header {
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid #fff;
     color: #fff;
-    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.header-right .btn:hover {
-    background-color: #777;
+.btn-header:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px);
 }
 
-/* Footer */
+/* Footer Styling */
 footer {
-    background-color: #222;
+    background: linear-gradient(90deg, #1e3c72, #2a5298);
+    padding: 20px;
     color: #fff;
-    padding: 10px 20px;
     text-align: center;
-    margin-top: 20px;
+    margin-top: 40px;
+    box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
 }
 
-footer a {
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin: 10px 0;
+}
+
+.footer-links a {
     color: #fff;
     text-decoration: none;
-    margin-left: 10px;
+    margin: 0 10px;
+    font-size: 14px;
+    transition: color 0.3s ease;
 }
 
-footer a:hover {
-    text-decoration: underline;
+.footer-links a:hover {
+    color: #00d9ff;
 }
 
+.social-icons {
+    margin-top: 10px;
+}
+
+.social-icons a {
+    display: inline-block;
+    margin: 0 10px;
+    color: #fff;
+    font-size: 24px;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #00d9ff;
+    transform: translateY(-3px);
+}
 .status, .donation, .server-info, .player-list, .event {
     margin: 20px auto;
     padding: 20px;
@@ -177,24 +227,6 @@ ul li, .event-details p {
 
 .status, .server-info, .player-list, .donation, .event {
     animation: fadeInUp 0.6s ease forwards;
-}
-
-/* Ikon sosial */
-.social-icons {
-    margin-top: 30px;
-}
-
-.social-icons a {
-    display: inline-block;
-    margin: 0 10px;
-    color: #fff;
-    font-size: 30px;
-    transition: color 0.3s ease, transform 0.3s ease;
-}
-
-.social-icons a:hover {
-    color: #00d9ff;
-    transform: scale(1.2);
 }
 
 /* Popup */
