@@ -77,6 +77,65 @@ async function checkAuthBeforeShowServerInfo() {
 async function fetchMinecraftStatus() {
     console.log("[DEBUG] Memulai pengecekan status server...");
 
+Ini loh code  javascript saya
+
+// Inisialisasi Supabase Client
+const SUPABASE_URL = "https://iafrlxyoeostvhnoywnv.supabase.co"; // Ganti dengan URL Supabase kamu
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno"; // Ganti dengan API Key Supabase kamu
+
+document.addEventListener("DOMContentLoaded", async () => {
+    window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
+});
+
+// Data server Minecraft
+const serverData = [
+    { ip: "node-1.panelphyzx.my.id", ports: [25565], type: "Java" },
+    { ip: "node-1.panelphyzx.my.id", ports: [19132], type: "Bedrock" }
+];
+
+// Utility function untuk menampilkan pesan error
+function showError(message) {
+    const errorElement = document.getElementById("error-message");
+    if (errorElement) {
+        errorElement.textContent = message;
+    } else {
+        console.error("[ERROR] Elemen error-message tidak ditemukan!");
+    }
+}
+
+// Cek apakah user sudah login
+async function isUserLoggedIn() {
+    console.log("[DEBUG] Mengecek status login user...");
+    try {
+        const { data, error } = await supabase.auth.getUser();
+        if (error) throw error;
+        return !!data.user;
+    } catch (error) {
+        console.error("[ERROR] Gagal mengecek login:", error);
+        showError("Gagal mengecek status login. Silakan coba lagi.");
+        return false;
+    }
+}
+
+// Tampilkan info server jika user login
+async function checkAuthBeforeShowServerInfo() {
+    console.log("[DEBUG] Memeriksa otentikasi sebelum menampilkan info server...");
+    const loggedIn = await isUserLoggedIn();
+    if (loggedIn) {
+        console.log("[DEBUG] User terautentikasi, menampilkan info server.");
+        showServerInfo();
+    } else {
+        console.warn("[WARNING] User belum login, menampilkan popup login.");
+        showError("Anda harus login terlebih dahulu untuk melihat IP/Port Server.");
+        openLoginPopup();
+    }
+}
+
+// Ambil status server Minecraft
+async function fetchMinecraftStatus() {
+    console.log("[DEBUG] Memulai pengecekan status server...");
+
     for (const server of serverData) {
         // Cek jika server adalah versi Java
         if (server.type === "Java") {
@@ -205,7 +264,6 @@ async function submitAuth() {
 
         alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil! Silakan cek email Anda untuk verifikasi.");
         closeLoginPopup();
-        await updateHeader(); // Perbarui header setelah login/register
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
         showError("Terjadi kesalahan: " + error.message);
@@ -217,9 +275,7 @@ async function logout() {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-
         alert("Logout berhasil!");
-        await updateHeader(); // Perbarui header setelah logout
     } catch (error) {
         console.error("[ERROR] Logout gagal:", error);
         showError("Terjadi kesalahan saat logout.");
