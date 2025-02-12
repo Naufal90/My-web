@@ -211,12 +211,22 @@ async function submitAuth() {
 
         alert(isLoginMode ? "Login berhasil!" : "Registrasi berhasil! Silakan cek email Anda untuk verifikasi.");
         closeLoginPopup();
-        await updateHeader(); // Perbarui header setelah login/register
+        await supabase.auth.refreshSession();
+        await checkAuthStatus(); // Pastikan status login diperbarui
     } catch (error) {
         console.error("[ERROR] Autentikasi gagal:", error);
         showError("Terjadi kesalahan: " + error.message);
     }
 }
+
+// Cek status login saat halaman dimuat
+document.addEventListener("DOMContentLoaded", checkAuthStatus);
+
+// Event listener untuk mendeteksi perubahan status login
+supabase.auth.onAuthStateChange((event, session) => {
+    console.log("[DEBUG] Perubahan status autentikasi:", event);
+    checkAuthStatus();
+});
 
 // Logout dengan Supabase
 async function logout() {
