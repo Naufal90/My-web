@@ -186,16 +186,16 @@ function toggleAuthMode() {
 // Login/register dengan Supabase
 async function submitAuth() {
     console.log("[DEBUG] Memulai proses login/register...");
-    const email = document.getElementById("email")?.value;
-    const password = document.getElementById("password")?.value;
+    
+    const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
+    const email = document.getElementById(isLoginMode ? "login-email" : "register-email")?.value;
+    const password = document.getElementById(isLoginMode ? "login-password" : "register-password")?.value;
 
     if (!email || !password) {
         console.warn("[WARNING] Email atau Password belum diisi.");
         showError("Mohon isi Email dan Password!");
         return;
     }
-
-    const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
 
     try {
         let response;
