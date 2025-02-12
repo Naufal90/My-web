@@ -8,6 +8,33 @@ document.addEventListener("DOMContentLoaded", async () => {
     await updateHeader(); // Perbarui header saat halaman dimuat
 });
 
+// Fungsi untuk mengecek status autentikasi pengguna dan memperbarui UI
+function checkAuthStatus() {
+    supabase.auth.getSession().then(({ data, error }) => {
+        if (error) {
+            console.error("Gagal mendapatkan sesi:", error);
+            return;
+        }
+
+        const user = data.session?.user;
+
+        if (user) {
+            document.getElementById("login-button").style.display = "none";
+            document.getElementById("logout-button").style.display = "block";
+            document.getElementById("username").textContent = `Halo, ${user.email}`;
+        } else {
+            document.getElementById("login-button").style.display = "block";
+            document.getElementById("logout-button").style.display = "none";
+            document.getElementById("username").textContent = "";
+        }
+    });
+}
+
+// Pastikan checkAuthStatus() dijalankan setelah DOM selesai dimuat
+document.addEventListener("DOMContentLoaded", () => {
+    checkAuthStatus();
+});
+
 // Fungsi untuk memperbarui header berdasarkan status login
 async function updateHeader() {
     const authButtons = document.getElementById("auth-buttons");
