@@ -35,7 +35,7 @@
                 <div id="auth-buttons">
                     <button class="btn btn-header" onclick="openLoginPopup('login')">Login</button>
                     <button class="btn btn-header" onclick="openLoginPopup('register')">Register</button>
-</div>
+                </div>
                 <!-- Info Pengguna dan Tombol Logout -->
                 <div id="user-info" style="display: none;">
                     <span id="user-email" style="margin-right: 10px; font-weight: bold;"></span>
@@ -68,6 +68,17 @@
             <h2>Pemain Online</h2>
             <p id="players-status">Memuat daftar pemain...</p>
             <ul id="player-list"></ul>
+        </div>
+
+        <!-- Redeem Code -->
+        <div class="redeem-code" id="redeem-code">
+            <h2>Redeem Code</h2>
+            <p id="redeem-message">Silakan login untuk melihat redeem code.</p>
+            <button class="btn" id="redeem-btn" onclick="showRedeemCode()">Tampilkan Redeem Code</button>
+            <div id="redeem-details" style="margin-top: 20px; display: none;">
+                <p><strong>Redeem Code:</strong> <span id="redeem-code-value"></span></p>
+                <p><strong>Petunjuk:</strong> Gunakan code ini di dalam game dengan command /reedem (code) untuk mendapatkan hadiah.</p>
+            </div>
         </div>
 
         <!-- Event -->
@@ -103,52 +114,52 @@
         </div>
 
         <!-- Popup Login/Register -->
-<div id="login-popup" class="popup">
-    <div class="popup-content">
-        <span class="close" onclick="closeLoginPopup()">&times;</span>
-        
-        <!-- Form Login -->
-        <div id="login-form">
-            <h2 id="popup-title">Login</h2>
-<input type="email" id="login-email" placeholder="Masukkan Email" required>
-            <input type="password" id="login-password" placeholder="Masukkan Password" required>
-            <button class="btn" onclick="submitAuth()">Login</button>
-            <p id="toggle-auth" onclick="toggleAuthMode('register')">Belum punya akun? Register</p>
-        </div>
+        <div id="login-popup" class="popup">
+            <div class="popup-content">
+                <span class="close" onclick="closeLoginPopup()">&times;</span>
+                
+                <!-- Form Login -->
+                <div id="login-form">
+                    <h2 id="popup-title">Login</h2>
+                    <input type="email" id="login-email" placeholder="Masukkan Email" required>
+                    <input type="password" id="login-password" placeholder="Masukkan Password" required>
+                    <button class="btn" onclick="submitAuth()">Login</button>
+                    <p id="toggle-auth" onclick="toggleAuthMode('register')">Belum punya akun? Register</p>
+                </div>
 
-        <!-- Form Register -->
-        <div id="register-form" style="display: none;">
-            <h2 id="popup-title">Register</h2>
-            <input type="email" id="register-email" placeholder="Masukkan Email" required>
-            <input type="password" id="register-password" placeholder="Masukkan Password" required>
-            <button class="btn" onclick="submitAuth()">Register</button>
-            <p id="toggle-auth" onclick="toggleAuthMode('login')">Sudah punya akun? Login</p>
+                <!-- Form Register -->
+                <div id="register-form" style="display: none;">
+                    <h2 id="popup-title">Register</h2>
+                    <input type="email" id="register-email" placeholder="Masukkan Email" required>
+                    <input type="password" id="register-password" placeholder="Masukkan Password" required>
+                    <button class="btn" onclick="submitAuth()">Register</button>
+                    <p id="toggle-auth" onclick="toggleAuthMode('login')">Sudah punya akun? Login</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
     </main>
 
     <!-- Footer -->
     <footer>
-    <div class="footer-content">
-        <p>&copy; 2020  KimNetwork. All rights reserved.</p>
-        <div class="footer-links">
-            <a href="#terms-of-service">Syarat & Ketentuan</a>
-            <a href="#privacy-policy">Kebijakan Privasi</a>
+        <div class="footer-content">
+            <p>&copy; 2020  KimNetwork. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#terms-of-service">Syarat & Ketentuan</a>
+                <a href="#privacy-policy">Kebijakan Privasi</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://chat.whatsapp.com/Hu9aQJF66j5C1Q55m77wVG" target="_blank" title="WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="https://discord.com/invite/QMyFFsEk" target="_blank" title="Discord">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
         </div>
-        <div class="social-icons">
-            <a href="https://chat.whatsapp.com/Hu9aQJF66j5C1Q55m77wVG" target="_blank" title="WhatsApp">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-            <a href="https://discord.com/invite/QMyFFsEk" target="_blank" title="Discord">
-                <i class="fab fa-discord"></i>
-            </a>
-            <a href="https://tiktok.com/@kimm_jongkok" target="_blank" title="Tiktok">
-                <i class="fab fa-tiktok"></i>
-            </a>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <!-- Script -->
     <script src="script.js"></script>
