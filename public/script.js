@@ -37,8 +37,8 @@ async function updateHeader() {
 
 // Data server Minecraft
 const serverData = [
-    { ip: "node-1.panelphyzx.my.id", ports: [25565], type: "Java" },
-    { ip: "node-1.panelphyzx.my.id", ports: [19132], type: "Bedrock" }
+    { ip: "kimnetwork.zapto.org", ports: [25565], type: "Java" },
+    { ip: "kimnetwork.zapto.org", ports: [19132], type: "Bedrock" }
 ];
 
 // Utility function untuk menampilkan pesan error
@@ -103,7 +103,7 @@ async function fetchMinecraftStatus() {
                 }
 
                 // Tampilkan status server
-                statusElement.innerHTML += data.online
+                statusElement.innerHTML = data.online
                     ? `<p>Server : Online | Pemain: ${data.players.online} / ${data.players.max}</p>`
                     : `<p>Server : Offline</p>`;
 
