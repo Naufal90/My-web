@@ -257,6 +257,21 @@ ul li, .event-details p {
     margin-top: 30px;
 }
 
+.redeem-code {
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+}
+
+#redeem-details {
+    display: none;
+    margin-top: 20px;
+}
+
 /* Animasi muncul */
 @keyframes fadeInUp {
     from {
