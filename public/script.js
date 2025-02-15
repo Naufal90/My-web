@@ -277,4 +277,29 @@ if (!serverInfoBtn) {
     serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
 }
 
+// Fungsi untuk menampilkan redeem code
+async function showRedeemCode() {
+    const redeemMessage = document.getElementById("redeem-message");
+    const redeemDetails = document.getElementById("redeem-details");
+    const redeemCodeValue = document.getElementById("redeem-code-value");
+
+    // Cek status login
+    const { data, error } = await supabase.auth.getSession();
+
+    if (data.session) {
+        // Jika pengguna sudah login
+        redeemMessage.textContent = "Redeem code berhasil dimuat!";
+        redeemDetails.style.display = "block";
+
+        // Contoh redeem code (bisa diganti dengan data dari database)
+        const redeemCode = "MONEYBOOST1500";
+        redeemCodeValue.textContent = redeemCode;
+    } else {
+        // Jika pengguna belum login
+        redeemMessage.textContent = "Silakan login terlebih dahulu untuk melihat redeem code.";
+        redeemDetails.style.display = "none";
+        openLoginPopup(); // Buka popup login
+    }
+}
+
 console.log("[DEBUG] Script selesai dimuat.");
