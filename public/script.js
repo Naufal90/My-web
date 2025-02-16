@@ -169,27 +169,36 @@ function closeLoginPopup() {
 function toggleAuthMode() {
     const popupTitle = document.getElementById("popup-title");
     const toggleAuthText = document.getElementById("toggle-auth");
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
 
-    // Cek mode saat ini
+    // Cek mode saat ini berdasarkan teks judul
     const isLoginMode = popupTitle.innerText === "Login";
 
-    // Toggle antara mode Login dan Register
     if (isLoginMode) {
-        popupTitle.innerText = "Register"; // Ubah judul ke "Register"
+        popupTitle.innerText = "Register"; 
         toggleAuthText.innerHTML = 'Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a>';
+        loginForm.style.display = "none";  
+        registerForm.style.display = "block";  
     } else {
-        popupTitle.innerText = "Login"; // Ubah judul ke "Login"
+        popupTitle.innerText = "Login"; 
         toggleAuthText.innerHTML = 'Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a>';
+        loginForm.style.display = "block";  
+        registerForm.style.display = "none";  
     }
 }
 
 // Login/register dengan Supabase
 async function submitAuth() {
     console.log("[DEBUG] Memulai proses login/register...");
-    
+
     const isLoginMode = document.getElementById("popup-title")?.innerText === "Login";
     const email = document.getElementById(isLoginMode ? "login-email" : "register-email")?.value;
     const password = document.getElementById(isLoginMode ? "login-password" : "register-password")?.value;
+
+    console.log("[DEBUG] isLoginMode:", isLoginMode);
+    console.log("[DEBUG] Email:", email);
+    console.log("[DEBUG] Password:", password);
 
     if (!email || !password) {
         console.warn("[WARNING] Email atau Password belum diisi.");
@@ -203,8 +212,9 @@ async function submitAuth() {
             response = await supabase.auth.signInWithPassword({ email, password });
         } else {
             response = await supabase.auth.signUp({ email, password });
-            console.log("[DEBUG] Respons signUp:", response);
         }
+
+        console.log("[DEBUG] Respons dari Supabase:", response);
 
         if (response.error) {
             throw response.error;
@@ -218,7 +228,6 @@ async function submitAuth() {
         showError("Terjadi kesalahan: " + error.message);
     }
 }
-
 // Logout dengan Supabase
 async function logout() {
     try {
