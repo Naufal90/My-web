@@ -203,6 +203,7 @@ async function submitAuth() {
             response = await supabase.auth.signInWithPassword({ email, password });
         } else {
             response = await supabase.auth.signUp({ email, password });
+            console.log("[DEBUG] Respons signUp:", response);
         }
 
         if (response.error) {
