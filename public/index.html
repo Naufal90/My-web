@@ -120,21 +120,21 @@
                 
                 <!-- Form Login -->
                 <div id="login-form">
-                    <h2 id="popup-title">Login</h2>
-                    <input type="email" id="login-email" placeholder="Masukkan Email" required>
-                    <input type="password" id="login-password" placeholder="Masukkan Password" required>
-                    <button class="btn" onclick="submitAuth()">Login</button>
-                    <p id="toggle-auth" onclick="toggleAuthMode('register')">Belum punya akun? Register</p>
-                </div>
+    <h2 id="popup-title">Login</h2>
+    <input type="email" id="login-email" placeholder="Masukkan Email" required>
+    <input type="password" id="login-password" placeholder="Masukkan Password" required>
+    <button class="btn" onclick="submitAuth()">Login</button>
+    <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? <a href="#">Register di sini</a></p>
+</div>
 
-                <!-- Form Register -->
-                <div id="register-form" style="display: none;">
-                    <h2 id="popup-title">Register</h2>
-                    <input type="email" id="register-email" placeholder="Masukkan Email" required>
-                    <input type="password" id="register-password" placeholder="Masukkan Password" required>
-                    <button class="btn" onclick="submitAuth()">Register</button>
-                    <p id="toggle-auth" onclick="toggleAuthMode('login')">Sudah punya akun? Login</p>
-                </div>
+<!-- Form Registrasi -->
+<div id="register-form" style="display: none;">
+    <h2 id="popup-title">Register</h2>
+    <input type="email" id="register-email" placeholder="Masukkan Email" required>
+    <input type="password" id="register-password" placeholder="Masukkan Password" required>
+    <button class="btn" onclick="submitAuth()">Register</button>
+    <p id="toggle-auth" onclick="toggleAuthMode()">Sudah punya akun? <a href="#">Login di sini</a></p>
+</div>
             </div>
         </div>
     </main>
