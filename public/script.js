@@ -302,7 +302,7 @@ async function showRedeemCode() {
         redeemDetails.style.display = "block";
 
         // Contoh redeem code (bisa diganti dengan data dari database)
-        const redeemCode = "MONEYBOOST1500";
+        const redeemCode = "EXPBOOST5000";
         redeemCodeValue.textContent = redeemCode;
     } else {
         // Jika pengguna belum login
