@@ -306,7 +306,7 @@ ul li, .event-details p {
     color: white;
 }
 
-.status, .server-info, .player-list, .donation, .event {
+.status, .server-info, .player-list, .donation, .event, .redeem-code {
     animation: fadeInUp 0.6s ease forwards;
 }
 
