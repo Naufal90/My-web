@@ -119,34 +119,49 @@
                 <span class="close" onclick="closeLoginPopup()">&times;</span>
                 
                 <!-- Form Login -->
-                <div id="login-form">
-    <h2 id="popup-title">Login</h2>
-    <input type="email" id="login-email" placeholder="Masukkan Email" required>
-    <input type="password" id="login-password" placeholder="Masukkan Password" required>
-    <button class="btn" onclick="submitAuth()">Login</button>
-    <button id="google-login-btn" class="icon-button">
-    <i class="fab fa-google"></i>
-</button>
-<!--button id="whatsapp-login-btn" class="icon-button">
-    <i class="fab fa-whatsapp"></i>
-</button-->
-    <p id="toggle-auth" onclick="toggleAuthMode()">Belum punya akun? <a href="#">Register di sini</a></p>
+<div id="auth-container">
+    <div class="auth-box">
+        <h2 id="popup-title">Login</h2>
+        <hr class="divider"> <!-- Garis pembatas -->
+        <input type="email" id="login-email" placeholder="Masukkan Email" required>
+        <input type="password" id="login-password" placeholder="Masukkan Password" required>
+        <button class="btn" onclick="submitAuth()">Login</button>
+
+        <div class="social-login">
+            <p>Atau login dengan:</p>
+            <button id="google-login-btn" class="icon-button">
+                <i class="fab fa-google"></i>
+            </button>
+            <!--button id="whatsapp-login-btn" class="icon-button">
+                <i class="fab fa-whatsapp"></i>
+            </button-->
+        </div>
+
+        <p id="toggle-auth">Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a></p>
+    </div>
 </div>
 
 <!-- Form Registrasi -->
-<div id="register-form" style="display: none;">
-    <h2 id="popup-title">Register</h2>
-    <input type="email" id="register-email" placeholder="Masukkan Email" required>
-    <input type="password" id="register-password" placeholder="Masukkan Password" required>
-    <button class="btn" onclick="submitAuth()">Register</button>
-    <button id="google-login-btn" class="icon-button">
-    <i class="fab fa-google"></i>
-</button>
-<!--button id="whatsapp-login-btn" class="icon-button">
-    <i class="fab fa-whatsapp"></i>
-</button-->
-    <p id="toggle-auth" onclick="toggleAuthMode()">Sudah punya akun? <a href="#">Login di sini</a></p>
-</div>
+<div id="auth-container" style="display: none;">
+    <div class="auth-box">
+        <h2 id="popup-title">Register</h2>
+        <hr class="divider"> <!-- Garis pembatas -->
+        <input type="email" id="register-email" placeholder="Masukkan Email" required>
+        <input type="password" id="register-password" placeholder="Masukkan Password" required>
+        <button class="btn" onclick="submitAuth()">Register</button>
+
+        <div class="social-login">
+            <p>Atau daftar dengan:</p>
+            <button id="google-login-btn" class="icon-button">
+                <i class="fab fa-google"></i>
+            </button>
+            <!--button id="whatsapp-login-btn" class="icon-button">
+                <i class="fab fa-whatsapp"></i>
+            </button-->
+        </div>
+
+        <p id="toggle-auth">Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a></p>
+    </div>
             </div>
         </div>
     </main>
