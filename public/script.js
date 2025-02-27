@@ -242,6 +242,46 @@ async function logout() {
     }
 }
 
+// Login dengan Google
+async function loginWithGoogle() {
+    console.log("[DEBUG] Memulai login dengan Google...");
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: window.location.origin // Redirect kembali ke situs setelah login
+        }
+    });
+
+    if (error) {
+        console.error("[ERROR] Gagal login dengan Google:", error);
+        showError("Gagal login dengan Google. Silakan coba lagi.");
+    } else {
+        console.log("[DEBUG] Login Google berhasil:", data);
+        alert("Login dengan Google berhasil!");
+        await updateHeader();
+    }
+}
+
+// Login dengan WhatsApp (Menggunakan Deep Link)
+function loginWithWhatsApp() {
+    console.log("[DEBUG] Memulai login dengan WhatsApp...");
+
+    // Gantilah nomor admin dengan nomor yang digunakan untuk verifikasi
+    const adminPhoneNumber = "6281234567890"; // Ganti dengan nomor admin WhatsApp
+    const loginMessage = encodeURIComponent("Halo, saya ingin login ke website!");
+
+    // Membuka WhatsApp dengan pesan otomatis
+    const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${loginMessage}`;
+    window.open(whatsappURL, "_blank");
+
+    alert("Silakan kirim pesan WhatsApp untuk mendapatkan kode verifikasi.");
+}
+
+// Tambahkan event listener untuk tombol login
+document.getElementById("google-login-btn")?.addEventListener("click", loginWithGoogle);
+document.getElementById("whatsapp-login-btn")?.addEventListener("click", loginWithWhatsApp);
+
 // Countdown event
 const eventDate = new Date("2025-02-02T15:00:00+07:00");
 
