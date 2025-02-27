@@ -264,23 +264,23 @@ async function loginWithGoogle() {
 }
 
 // Login dengan WhatsApp (Menggunakan Deep Link)
-function loginWithWhatsApp() {
-    console.log("[DEBUG] Memulai login dengan WhatsApp...");
+//function loginWithWhatsApp() {
+    //console.log("[DEBUG] Memulai login dengan WhatsApp...");
 
     // Gantilah nomor admin dengan nomor yang digunakan untuk verifikasi
-    const adminPhoneNumber = "6281234567890"; // Ganti dengan nomor admin WhatsApp
-    const loginMessage = encodeURIComponent("Halo, saya ingin login ke website!");
+ //   const adminPhoneNumber = "6281234567890"; // Ganti dengan nomor admin WhatsApp
+   // const loginMessage = encodeURIComponent("Halo, saya ingin login ke website!");
 
     // Membuka WhatsApp dengan pesan otomatis
-    const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${loginMessage}`;
-    window.open(whatsappURL, "_blank");
+    //const whatsappURL = `https://wa.me/${adminPhoneNumber}?text=${loginMessage}`;
+   // window.open(whatsappURL, "_blank");
 
-    alert("Silakan kirim pesan WhatsApp untuk mendapatkan kode verifikasi.");
-}
+    //alert("Silakan kirim pesan WhatsApp untuk mendapatkan kode verifikasi.");
+//}
 
 // Tambahkan event listener untuk tombol login
 document.getElementById("google-login-btn")?.addEventListener("click", loginWithGoogle);
-document.getElementById("whatsapp-login-btn")?.addEventListener("click", loginWithWhatsApp);
+//document.getElementById("whatsapp-login-btn")?.addEventListener("click", loginWithWhatsApp);
 
 // Countdown event
 const eventDate = new Date("2025-02-02T15:00:00+07:00");
