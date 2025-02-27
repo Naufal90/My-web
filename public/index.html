@@ -119,8 +119,8 @@
                 <span class="close" onclick="closeLoginPopup()">&times;</span>
                 
                 <!-- Form Login -->
-<div id="auth-container">
-    <div class="auth-box">
+<div id="login-form">
+    <!--div class="auth-box"-->
         <h2 id="popup-title">Login</h2>
         <hr class="divider"> <!-- Garis pembatas -->
         <input type="email" id="login-email" placeholder="Masukkan Email" required>
@@ -142,13 +142,13 @@
 </div>
 
 <!-- Form Registrasi -->
-<div id="auth-container" style="display: none;">
-    <div class="auth-box">
-        <h2 id="popup-title">Register</h2>
+<div id="register-form" style="display: none;">
+    <!--div class="auth-box"-->
+        <h2 id="popup-title">Pendaftaran</h2>
         <hr class="divider"> <!-- Garis pembatas -->
         <input type="email" id="register-email" placeholder="Masukkan Email" required>
         <input type="password" id="register-password" placeholder="Masukkan Password" required>
-        <button class="btn" onclick="submitAuth()">Register</button>
+        <button class="btn" onclick="submitAuth()">Daftar</button>
 
         <div class="social-login">
             <p>Atau daftar dengan:</p>
