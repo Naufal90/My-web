@@ -37,8 +37,8 @@ async function updateHeader() {
 
 // Data server Minecraft
 const serverData = [
-    { ip: "kimnetwork.zapto.org", ports: [25565], type: "Java" },
-    { ip: "kimnetwork.zapto.org", ports: [19132], type: "Bedrock" }
+    { ip: "kimnetwork.play.hosting", ports: [28077], type: "Java" },
+    { ip: "kimnetwork.play.hosting", ports: [28601], type: "Bedrock" }
 ];
 
 // Utility function untuk menampilkan pesan error
