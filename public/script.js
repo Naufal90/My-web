@@ -327,6 +327,33 @@ if (!serverInfoBtn) {
     serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
 }
 
+let music = document.getElementById("bg-music");
+let panel = document.getElementById("music-panel");
+
+// Autoplay dengan interaksi pertama
+document.addEventListener("click", function () {
+    if (music.paused) {
+        music.play().catch(error => console.log("Autoplay diblokir:", error));
+    }
+}, { once: true });
+
+function togglePanel() {
+    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+}
+
+function toggleMusic() {
+    if (music.paused) {
+        music.play();
+    } else {
+        music.pause();
+    }
+}
+
+function stopMusic() {
+    music.pause();
+    music.currentTime = 0;
+}
+
 // Fungsi untuk menampilkan redeem code
 async function showRedeemCode() {
     const redeemMessage = document.getElementById("redeem-message");
