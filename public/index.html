@@ -166,40 +166,22 @@
         </div>
     </main>
 
-     <!-- Musik player -->
-    <div id="music-container" onclick="toggleMusic()">
-        <img id="music-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play">
-        <span id="music-text">Memutar Musik...</span>
+     <!-- Ikon kecil untuk membuka panel musik -->
+    <div id="music-icon" onclick="togglePanel()">
+        <img src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Music">
     </div>
 
+    <!-- Panel musik -->
+    <div id="music-panel">
+        <p>Music Player</p>
+        <button onclick="toggleMusic()">▶️ / ⏸</button>
+        <button onclick="stopMusic()">⏹ Stop</button>
+    </div>
+
+    <!-- Audio -->
     <audio id="bg-music" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
-
-    <script>
-        let music = document.getElementById("bg-music");
-        let musicText = document.getElementById("music-text");
-        let musicIcon = document.getElementById("music-icon");
-
-        // Autoplay dengan interaksi
-        document.addEventListener("click", function () {
-            if (music.paused) {
-                music.play().catch(error => console.log("Autoplay diblokir:", error));
-            }
-        }, { once: true });
-
-        function toggleMusic() {
-            if (music.paused) {
-                music.play();
-                musicText.innerText = "Musik Berhenti";
-                musicIcon.src = "https://cdn-icons-png.flaticon.com/512/151/151869.png"; // Ikon Pause
-            } else {
-                music.pause();
-                musicText.innerText = "Memutar Musik...";
-                musicIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png"; // Ikon Play
-            }
-        }
-    </script>
 
     <!-- Footer -->
     <footer>
