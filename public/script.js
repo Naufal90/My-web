@@ -327,6 +327,25 @@ if (!serverInfoBtn) {
     serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
 }
 
+let music = document.getElementById("bg-music");
+
+// Coba autoplay saat halaman dimuat
+window.onload = function() {
+    let playPromise = music.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log("Autoplay diblokir, menunggu interaksi pengguna.");
+        });
+    }
+};
+
+// Memastikan musik mulai setelah interaksi pertama jika autoplay diblokir
+document.addEventListener("click", function () {
+    if (music.paused) {
+        music.play();
+    }
+}, { once: true });
+
 function togglePanel() {
     let panel = document.getElementById("music-panel");
     panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
