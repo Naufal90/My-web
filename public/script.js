@@ -327,32 +327,31 @@ if (!serverInfoBtn) {
     serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
 }
 
-let music = document.getElementById("bg-music");
-let panel = document.getElementById("music-panel");
-
-// Autoplay dengan interaksi pertama
-document.addEventListener("click", function () {
-    if (music.paused) {
-        music.play().catch(error => console.log("Autoplay diblokir:", error));
-    }
-}, { once: true });
-
 function togglePanel() {
-    panel.style.display = (panel.style.display === "block") ? "none" : "block";
+    let panel = document.getElementById("music-panel");
+    panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
 }
 
 function toggleMusic() {
-    if (music.paused) {
-        music.play();
+    let audio = document.getElementById("bg-music");
+    if (audio.paused) {
+        audio.play();
     } else {
-        music.pause();
+        audio.pause();
     }
 }
 
 function stopMusic() {
-    music.pause();
-    music.currentTime = 0;
+    let audio = document.getElementById("bg-music");
+    audio.pause();
+    audio.currentTime = 0; // Reset ke awal
 }
+
+// Pastikan ikon musik muncul saat halaman dimuat
+window.onload = function() {
+    document.getElementById("music-panel").style.display = "none"; // Sembunyikan panel saat load
+    document.getElementById("music-icon").style.display = "block"; // Pastikan ikon terlihat
+};
 
 // Fungsi untuk menampilkan redeem code
 async function showRedeemCode() {
