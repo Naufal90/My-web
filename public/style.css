@@ -310,6 +310,32 @@ ul li, .event-details p {
     animation: fadeInUp 0.6s ease forwards;
 }
 
+/* Styling tombol musik di pojok kanan bawah */
+        #music-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        #music-container img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        #music-container:hover {
+            background: rgba(0, 0, 0, 0.9);
+        }
+
 /* Popup */
 .popup {
     display: none;
