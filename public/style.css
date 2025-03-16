@@ -310,36 +310,95 @@ ul li, .event-details p {
     animation: fadeInUp 0.6s ease forwards;
 }
 
-/* Styling tombol musik di pojok kanan bawah */
-        #music-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            padding: 10px;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            font-size: 14px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
+/* Styling ikon kecil di pojok kanan bawah */
+#music-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
 
-        #music-container img {
-            width: 20px;
-            height: 20px;
-            margin-right: 5px;
-        }
+#music-icon img {
+    width: 30px;
+    height: 30px;
+}
 
-        #music-container:hover {
-            background: rgba(0, 0, 0, 0.9);
-        }
+/* Styling panel musik */
+#music-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#music-panel button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+}
+
 
 /* Popup */
 .popup {
     display: none;
+   /* Styling ikon kecil di pojok kanan bawah */
+#music-icon {
     position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#music-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+/* Styling panel musik */
+#music-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    display: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+#music-panel button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+} position: fixed;
     top: 0;
     left: 0;
     width: 100%;
