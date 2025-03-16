@@ -326,9 +326,9 @@ ul li, .event-details p {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-audio {
+/*audio {
     display: none;
-}
+} */
 
 #music-icon img {
     width: 30px;
