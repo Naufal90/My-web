@@ -162,21 +162,18 @@
 
         <p id="toggle-auth">Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a></p>
 </div>
-    
-<!-- Ikon kecil untuk membuka panel musik -->
-    <div id="music-icon" onclick="togglePanel()">
-        <img src="https://www.flaticon.com/free-icon/musical-note_461146?term=music&page=1&position=3&origin=search&related_id=461146#" alt="Music">
-    </div>
-
-    <!-- Panel musik -->
-    <div id="music-panel">
-        <p>Music Latar</p>
-        <button onclick="toggleMusic()">▶️ / ⏸</button>
-        <button onclick="stopMusic()">⏹ Stop</button>
-    </div>
             </div>
         </div>
     </main>
+
+    <!-- Ikon Musik -->
+    <div id="music-icon" onclick="togglePanel()">🎵</div>
+
+    <!-- Panel Kontrol Musik -->
+    <div id="music-panel" style="display: none;">
+        <button onclick="toggleMusic()">Play/Pause</button>
+        <button onclick="stopMusic()">Stop</button>
+    </div>
 
     <!-- Audio -->
     <audio id="bg-music" loop>
