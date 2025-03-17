@@ -160,7 +160,7 @@ footer {
     color: #00d9ff;
     transform: translateY(-3px);
 }
-.status, .donation, .server-info, .player-list, .event, .reedem-code, #music-icon {
+.status, .donation, .server-info, .player-list, .event, .reedem-code {
     margin: 20px auto;
     padding: 20px;
     border-radius: 8px;
