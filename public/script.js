@@ -6,6 +6,53 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
     await updateHeader(); // Perbarui header saat halaman dimuat
+    
+    let music = document.getElementById("bg-music");
+            let musicPanel = document.getElementById("music-panel");
+            let musicIcon = document.getElementById("music-icon");
+            let toggleMusicBtn = document.getElementById("toggle-music");
+            let stopMusicBtn = document.getElementById("stop-music");
+
+            // Coba autoplay saat halaman dimuat
+            let playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("Autoplay diblokir, menunggu interaksi pengguna.");
+                });
+            }
+
+            // Pastikan musik mulai setelah interaksi pertama jika autoplay diblokir
+            document.addEventListener("click", function () {
+                if (music.paused) {
+                    music.play();
+                }
+            }, { once: true });
+
+            function togglePanel() {
+                musicPanel.style.display = (musicPanel.style.display === "none" || musicPanel.style.display === "") ? "block" : "none";
+            }
+
+            function toggleMusic() {
+                if (music.paused) {
+                    music.play();
+                } else {
+                    music.pause();
+                }
+            }
+
+            function stopMusic() {
+                music.pause();
+                music.currentTime = 0; // Reset ke awal
+            }
+
+            // Event listener
+            musicIcon.addEventListener("click", togglePanel);
+            toggleMusicBtn.addEventListener("click", toggleMusic);
+            stopMusicBtn.addEventListener("click", stopMusic);
+
+            // Pastikan ikon musik muncul saat halaman dimuat
+            musicPanel.style.display = "none";
+            musicIcon.style.display = "block";
 });
 
 // Fungsi untuk memperbarui header berdasarkan status login
