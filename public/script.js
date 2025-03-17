@@ -8,6 +8,52 @@ document.addEventListener("DOMContentLoaded", async () => {
     await updateHeader(); // Perbarui header saat halaman dimuat
 });
 
+// 🔹 Inisialisasi Musik
+    let music = document.getElementById("bg-music");
+
+    // Coba autoplay saat halaman dimuat
+    let playPromise = music.play();
+    if (playPromise !== undefined) {
+        playPromise.catch(error => {
+            console.log("Autoplay diblokir, menunggu interaksi pengguna.");
+        });
+    }
+
+    // Pastikan musik mulai setelah interaksi pertama jika autoplay diblokir
+    document.addEventListener("click", function () {
+        if (music.paused) {
+            music.play();
+        }
+    }, { once: true });
+
+    function togglePanel() {
+        let panel = document.getElementById("music-panel");
+        panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
+    }
+
+    function toggleMusic() {
+        if (music.paused) {
+            music.play();
+        } else {
+            music.pause();
+        }
+    }
+
+    function stopMusic() {
+        music.pause();
+        music.currentTime = 0; // Reset ke awal
+    }
+
+    // 🔹 Event listener untuk tombol musik
+    document.getElementById("music-icon").addEventListener("click", togglePanel);
+    document.getElementById("toggle-music").addEventListener("click", toggleMusic);
+    document.getElementById("stop-music").addEventListener("click", stopMusic);
+
+    // 🔹 Pastikan ikon musik muncul saat halaman dimuat
+    document.getElementById("music-panel").style.display = "none";
+    document.getElementById("music-icon").style.display = "block";
+});
+
 // Fungsi untuk memperbarui header berdasarkan status login
 async function updateHeader() {
     const authButtons = document.getElementById("auth-buttons");
@@ -325,68 +371,6 @@ if (!serverInfoBtn) {
     console.error("[ERROR] Elemen server-info-btn tidak ditemukan!");
 } else {
     serverInfoBtn.addEventListener('click', checkAuthBeforeShowServerInfo);
-}
-
-window.onload = function() {
-    let music = document.getElementById("bg-music");
-    let panel = document.getElementById("music-panel");
-    let musicIcon = document.getElementById("music-icon");
-
-    // Pastikan panel tersembunyi saat halaman dimuat
-    if (panel) {
-        panel.style.display = "none";
-    }
-
-    // Pastikan ikon musik terlihat
-    if (musicIcon) {
-        musicIcon.style.display = "block";
-    }
-
-    // Coba autoplay saat halaman dimuat
-    if (music) {
-        let playPromise = music.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay diblokir, menunggu interaksi pengguna.");
-            });
-        }
-    }
-
-    // Memastikan musik mulai setelah interaksi pertama jika autoplay diblokir
-    document.addEventListener("click", function () {
-        if (music && music.paused) {
-            music.play();
-        }
-    }, { once: true });
-};
-
-// Fungsi untuk menampilkan/sembunyikan panel musik
-function togglePanel() {
-    let panel = document.getElementById("music-panel");
-    if (panel) {
-        panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
-    }
-}
-
-// Fungsi untuk memutar atau menjeda musik
-function toggleMusic() {
-    let audio = document.getElementById("bg-music");
-    if (audio) {
-        if (audio.paused) {
-            audio.play();
-        } else {
-            audio.pause();
-        }
-    }
-}
-
-// Fungsi untuk menghentikan musik dan mengembalikan ke awal
-function stopMusic() {
-    let audio = document.getElementById("bg-music");
-    if (audio) {
-        audio.pause();
-        audio.currentTime = 0; // Reset ke awal
-    }
 }
 
 // Fungsi untuk menampilkan redeem code
