@@ -351,6 +351,14 @@ audio {
     margin: 5px;
 }
 
+#login-form, #register-form {
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+}
 
 /* Popup */
 .popup {
