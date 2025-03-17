@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
     await updateHeader(); // Perbarui header saat halaman dimuat
 
+    window.togglePanel = function() {
     // 🔹 Inisialisasi Musik
     let music = document.getElementById("bg-music");
 
