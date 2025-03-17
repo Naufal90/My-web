@@ -3,12 +3,12 @@ const SUPABASE_URL = "https://iafrlxyoeostvhnoywnv.supabase.co"; // Ganti dengan
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno"; // Ganti dengan API Key Supabase kamu
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // 🔹 Inisialisasi Supabase
     window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
     await updateHeader(); // Perbarui header saat halaman dimuat
-});
 
-// 🔹 Inisialisasi Musik
+    // 🔹 Inisialisasi Musik
     let music = document.getElementById("bg-music");
 
     // Coba autoplay saat halaman dimuat
