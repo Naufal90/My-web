@@ -7,53 +7,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
     await updateHeader(); // Perbarui header saat halaman dimuat
-
-    window.togglePanel = function() {
-    // 🔹 Inisialisasi Musik
-    let music = document.getElementById("bg-music");
-
-    // Coba autoplay saat halaman dimuat
-    let playPromise = music.play();
-    if (playPromise !== undefined) {
-        playPromise.catch(error => {
-            console.log("Autoplay diblokir, menunggu interaksi pengguna.");
-        });
-    }
-
-    // Pastikan musik mulai setelah interaksi pertama jika autoplay diblokir
-    document.addEventListener("click", function () {
-        if (music.paused) {
-            music.play();
-        }
-    }, { once: true });
-
-    function togglePanel() {
-        let panel = document.getElementById("music-panel");
-        panel.style.display = (panel.style.display === "none" || panel.style.display === "") ? "block" : "none";
-    }
-
-    function toggleMusic() {
-        if (music.paused) {
-            music.play();
-        } else {
-            music.pause();
-        }
-    }
-
-    function stopMusic() {
-        music.pause();
-        music.currentTime = 0; // Reset ke awal
-    }
-
-    // 🔹 Event listener untuk tombol musik
-    document.getElementById("music-icon").addEventListener("click", togglePanel);
-    document.getElementById("toggle-music").addEventListener("click", toggleMusic);
-    document.getElementById("stop-music").addEventListener("click", stopMusic);
-
-    // 🔹 Pastikan ikon musik muncul saat halaman dimuat
-    document.getElementById("music-panel").style.display = "none";
-    document.getElementById("music-icon").style.display = "block";
-});
+    });
 
 // Fungsi untuk memperbarui header berdasarkan status login
 async function updateHeader() {
