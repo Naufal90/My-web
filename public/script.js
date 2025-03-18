@@ -357,6 +357,22 @@ function updateCountdown() {
 
         countdownElement.textContent = `${days} hari ${hours} jam ${minutes} menit ${seconds} detik`;
     }
+
+    // Cek status login
+    const { data } = await supabase.auth.getSession();
+
+    if (data.session) {
+        // Jika user sudah login, izinkan akses ke halaman event
+        registerBtnElement.addEventListener("click", function () {
+            window.location.href = "event.html";
+        });
+    } else {
+        // Jika belum login, blokir akses dan tampilkan popup login
+        registerBtnElement.addEventListener("click", function (event) {
+            event.preventDefault();
+            openLoginPopup();
+        });
+    }
 }
 
 // Jalankan countdown setiap detik
