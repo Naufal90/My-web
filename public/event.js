@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async function () {
+document.addEventListener("DOMContentLoaded", async () => {
     console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari script.js...");
 
     if (!window.supabase) {
