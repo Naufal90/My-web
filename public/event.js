@@ -1,19 +1,15 @@
 document.addEventListener("DOMContentLoaded", async function () {
-    console.log("[DEBUG] Halaman dimuat. Menginisialisasi Supabase...");
+    console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari script.js...");
 
-    // Inisialisasi Supabase
-    const supabaseUrl = "https://iafrlxyoeostvhnoywnv.supabase.co";  
-    const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno";
-    const resendApiKey = "re_cnfCgBHC_DFZhhpdRx5iaxVUanuPomiLS";
+    if (!window.supabase) {
+        return console.error("[ERROR] Supabase belum diinisialisasi di script.js!");
+    }
 
-    console.log("[DEBUG] Supabase & Resend API diinisialisasi.");
-
-    // Buat koneksi ke Supabase
-    const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+    console.log("[DEBUG] Supabase berhasil digunakan:", window.supabase);
 
     // Cek apakah Supabase bisa diakses
     try {
-        const { data, error } = await supabase.from("event_registrations").select("*").limit(1);
+        const { data, error } = await window.supabase.from("event_registrations").select("*").limit(1);
         if (error) throw error;
         console.log("[DEBUG] Supabase terhubung, data contoh:", data);
     } catch (err) {
@@ -41,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         try {
             // Simpan data ke Supabase
             console.log("[DEBUG] Mengirim data ke Supabase...");
-            const { data, error } = await supabase.from("event_registrations").insert([
+            const { data, error } = await window.supabase.from("event_registrations").insert([
                 { name, phone, gamertag, email, terms_agreed: termsAgreed }
             ]);
 
@@ -67,6 +63,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Fungsi untuk mengirim email via Resend
     async function sendEmail(name, email) {
         const eventName = "Event KimNetwork";
+        const resendApiKey = "re_cnfCgBHC_DFZhhpdRx5iaxVUanuPomiLS"; // Pastikan sudah didefinisikan
 
         try {
             const response = await fetch("https://api.resend.com/emails", {
