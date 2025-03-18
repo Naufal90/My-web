@@ -7,9 +7,15 @@
     <link rel="stylesheet" href="event.css">
 </head>
 <body>
-    <div class="container">
-        <h2>Pendaftaran Event</h2>
-        <form id="event-form">
+    <div class="event-container">
+        <header>
+            <h1>Event Builder Challenge</h1>
+            <p>Daftarkan dirimu dan tunjukkan kreativitasmu!</p>
+        </header>
+        
+        <form id="event-form" class="form-container">
+            <h2>Pendaftaran Event</h2>
+            
             <label for="name">Nama:</label>
             <input type="text" id="name" required>
 
@@ -22,9 +28,10 @@
             <label for="email">Email:</label>
             <input type="email" id="email" required>
 
-            <label>
-                <input type="checkbox" id="terms" required> Saya menyetujui syarat & ketentuan event.
-            </label>
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Saya menyetujui syarat & ketentuan event.</label>
+            </div>
 
             <button type="submit">Daftar Sekarang</button>
         </form>
