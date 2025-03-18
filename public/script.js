@@ -330,7 +330,7 @@ document.getElementById("google-login-btn")?.addEventListener("click", loginWith
 //document.getElementById("whatsapp-login-btn")?.addEventListener("click", loginWithWhatsApp);
 
 // Countdown event
-const eventDate = new Date("2025-02-02T15:00:00+07:00");
+const eventDate = new Date("2025-04-10T15:00:00+07:00");
 
 function updateCountdown() {
     const countdownElement = document.getElementById("countdown");
