@@ -6,6 +6,7 @@ const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
 
 document.getElementById("event-form").addEventListener("submit", async function (event) {
     event.preventDefault();
+    console.log("[INFO] Form pendaftaran dikirim...");
 
     const name = document.getElementById("name").value.trim();
     const phone = document.getElementById("phone").value.trim();
@@ -13,26 +14,36 @@ document.getElementById("event-form").addEventListener("submit", async function 
     const email = document.getElementById("email").value.trim();
     const termsAgreed = document.getElementById("terms").checked;
 
+    console.log("[DEBUG] Data yang dimasukkan:", { name, phone, gamertag, email, termsAgreed });
+
     if (!termsAgreed) {
         document.getElementById("status").textContent = "Anda harus menyetujui syarat & ketentuan!";
+        console.warn("[WARNING] User belum menyetujui syarat & ketentuan.");
         return;
     }
 
     try {
-        // Simpan data ke Supabase
+        console.log("[INFO] Mengirim data ke Supabase...");
         const { data, error } = await supabase.from("event_registrations").insert([
             { name, phone, gamertag, email, terms_agreed: termsAgreed }
         ]);
 
-        if (error) throw error;
+        if (error) {
+            console.error("[ERROR] Gagal menyimpan data ke Supabase:", error.message);
+            throw error;
+        }
+
+        console.log("[SUCCESS] Data berhasil disimpan di Supabase:", data);
 
         // Kirim notifikasi email via Resend
+        console.log("[INFO] Mengirim email konfirmasi...");
         await sendEmail(name, email);
 
         document.getElementById("status").textContent = "Pendaftaran berhasil! Cek email Anda.";
         document.getElementById("event-form").reset();
     } catch (err) {
         document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
+        console.error("[ERROR] Terjadi kesalahan:", err.message);
     }
 });
 
@@ -40,26 +51,34 @@ document.getElementById("event-form").addEventListener("submit", async function 
 async function sendEmail(name, email) {
     const eventName = "Event KimNetwork";  // Ganti dengan nama event
 
-    const response = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-            "Authorization": `Bearer ${resendApiKey}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            from: "KimNetwork <noreply@onresend.com>",
-            to: [email],
-            subject: `Pendaftaran Berhasil: ${eventName}`,
-            html: `<p>Halo ${name},</p>
-                   <p>Terima kasih telah mendaftar di <b>${eventName}</b>!</p>
-                   <p>Pastikan Anda mengikuti informasi terbaru di server kami.</p>
-                   <br>
-                   <p>Salam,</p>
-                   <p><b>Tim KimNetwork</b></p>`
-        })
-    });
+    try {
+        console.log("[INFO] Mengirim email ke:", email);
+        const response = await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${resendApiKey}`,
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from: "KimNetwork <noreply@onresend.com>",
+                to: [email],
+                subject: `Pendaftaran Berhasil: ${eventName}`,
+                html: `<p>Halo ${name},</p>
+                       <p>Terima kasih telah mendaftar di <b>${eventName}</b>!</p>
+                       <p>Pastikan Anda mengikuti informasi terbaru di server kami.</p>
+                       <br>
+                       <p>Salam,</p>
+                       <p><b>Tim KimNetwork</b></p>`
+            })
+        });
 
-    if (!response.ok) {
-        throw new Error("Gagal mengirim email konfirmasi.");
+        if (!response.ok) {
+            console.error("[ERROR] Gagal mengirim email konfirmasi.");
+            throw new Error("Gagal mengirim email konfirmasi.");
+        }
+
+        console.log("[SUCCESS] Email konfirmasi berhasil dikirim ke:", email);
+    } catch (error) {
+        console.error("[ERROR] Terjadi kesalahan saat mengirim email:", error.message);
     }
 }
