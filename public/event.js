@@ -1,8 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari script.js...");
 
-    if (!window.supabase) {
-        return console.error("[ERROR] Supabase belum diinisialisasi di script.js!");
+    // Menunggu Supabase diinisialisasi jika belum ada
+    while (!window.supabase) {
+        console.warn("[WARNING] Supabase belum diinisialisasi di script.js. Menunggu...");
+        await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
     }
 
     console.log("[DEBUG] Supabase berhasil digunakan:", window.supabase);
@@ -16,8 +18,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         console.error("[ERROR] Gagal menghubungkan ke Supabase:", err);
     }
 
+    // Cek apakah formulir ada sebelum menambahkan event listener
+    const form = document.getElementById("event-form");
+    if (!form) {
+        console.error("[ERROR] Formulir event tidak ditemukan di halaman!");
+        return;
+    }
+
     // Event listener untuk form pendaftaran event
-    document.getElementById("event-form").addEventListener("submit", async function (event) {
+    form.addEventListener("submit", async function (event) {
         event.preventDefault();
 
         const name = document.getElementById("name").value.trim();
@@ -53,12 +62,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             await sendEmail(name, email);
 
             document.getElementById("status").textContent = "Pendaftaran berhasil! Cek email Anda.";
-            document.getElementById("event-form").reset();
+            form.reset();
         } catch (err) {
             console.error("[ERROR] Terjadi kesalahan:", err);
             document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
         }
     });
+});
 
     // Fungsi untuk mengirim email via Resend
     async function sendEmail(name, email) {
@@ -96,4 +106,3 @@ document.addEventListener("DOMContentLoaded", async () => {
             console.error("[ERROR] Terjadi kesalahan saat mengirim email:", err);
         }
     }
-});
