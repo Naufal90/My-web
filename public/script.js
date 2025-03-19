@@ -2,7 +2,7 @@
 const SUPABASE_URL = "https://iafrlxyoeostvhnoywnv.supabase.co"; // Ganti dengan URL Supabase kamu
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno"; // Ganti dengan API Key Supabase kamu
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
     await updateHeader(); // Perbarui header saat halaman dimuat
@@ -332,7 +332,7 @@ document.getElementById("google-login-btn")?.addEventListener("click", loginWith
 // Countdown event
 const eventDate = new Date("2025-04-10T15:00:00+07:00");
 
-function updateCountdown() {
+async function updateCountdown() {
     const countdownElement = document.getElementById("countdown");
     const eventInfoElement = document.getElementById("event-info");
     const registerBtnElement = document.getElementById("register-btn");
