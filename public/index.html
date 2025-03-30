@@ -4,39 +4,46 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="facebook-domain-verification" content="q9ufpevzfqze7egh2i4j5uveo2wfq5" />
-    <meta property="og:title" content="Status Server KimNetwork">
+    
+    <!-- Social Media Meta Tags -->
+    <meta property="og:title" content="Server KimNetwork">
     <meta property="og:description" content="Cek status server, pemain online, dan informasi lengkap tentang KimNetwork.">
     <meta property="og:image" content="https://raw.githubusercontent.com/Naufal90/My-web/main/undefined%20-%20Imgur.jpg">
     <meta property="og:url" content="https://naufal90.github.io/My-web">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Status Server KimNetwork">
+    <meta name="twitter:title" content="Server KimNetwork">
     <meta name="twitter:description" content="Cek status server, pemain online, dan informasi lengkap tentang KimNetwork.">
     <meta name="twitter:image" content="https://raw.githubusercontent.com/Naufal90/My-web/main/undefined%20-%20Imgur.jpg">
     <meta name="twitter:url" content="https://naufal90.github.io/My-web">
-    <title>Status Server KimNetwork</title>
+    
+    <title>Server KimNetwork</title>
+    
+    <!-- External Resources -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="music.css">
 </head>
+
 <body>
-    <!-- Header -->
+    <!-- Header Section -->
     <header>
         <div class="header-content">
-            <!-- Pojok Kiri: Nama Server dan Ikon -->
+            <!-- Server Logo and Name -->
             <div class="header-left">
-                <img src="https://raw.githubusercontent.com/Naufal90/My-web/main/undefined%20-%20Imgur.jpg" alt="Server Icon" class="server-icon">
+                <img src="https://raw.githubusercontent.com/Naufal90/My-web/main/undefined%20-%20Imgur.jpg" 
+                     alt="Server Icon" 
+                     class="server-icon">
                 <h1>KimNetwork</h1>
             </div>
 
-            <!-- Pojok Kanan: Tombol Login dan Register -->
+            <!-- Auth Buttons -->
             <div class="header-right">
-                <!-- Tombol Login dan Register -->
                 <div id="auth-buttons">
                     <button class="btn btn-header" onclick="openLoginPopup('login')">Login</button>
                     <button class="btn btn-header" onclick="openLoginPopup('register')">Register</button>
                 </div>
-                <!-- Info Pengguna dan Tombol Logout -->
                 <div id="user-info" style="display: none;">
                     <span id="user-email" style="margin-right: 10px; font-weight: bold;"></span>
                     <button class="btn btn-header btn-logout" onclick="logout()">Logout</button>
@@ -45,44 +52,44 @@
         </div>
     </header>
 
-    <!-- Konten Utama -->
+    <!-- Main Content -->
     <main>
-        <!-- Pesan Error -->
-        <div id="error-message" style="color: red; text-align: center; margin: 10px 0;"></div>
+        <!-- Error Message -->
+        <div id="error-message" class="error-message"></div>
 
-        <!-- Status Server -->
-        <div class="status" id="status">
+        <!-- Server Status -->
+        <section class="status" id="status">
             <h1>Status Server KimNetwork</h1>
             <p id="server-status">Memuat Status Server...</p>
-        </div>
-
-        <!-- Informasi Server -->
-        <div class="server-info" id="server-info">
+        </section>
+        
+        <!-- Server Info -->
+        <section class="server-info" id="server-info">
             <h2>Informasi Server</h2>
             <button class="btn" id="server-info-btn">Tampilkan IP & Port Server</button>
-            <div id="server-details" style="margin-top: 20px;"></div>
-        </div>
+            <div id="server-details" class="server-details"></div>
+        </section>
 
-        <!-- Daftar Pemain Online -->
-        <div class="player-list">
+        <!-- Online Players -->
+        <section class="player-list">
             <h2>Pemain Online</h2>
             <p id="players-status">Memuat daftar pemain...</p>
             <ul id="player-list"></ul>
-        </div>
+        </section>
 
         <!-- Redeem Code -->
-        <!--div class="redeem-code" id="redeem-code">
+        <section class="redeem-code" id="redeem-code">
             <h2>Redeem Code</h2>
             <p id="redeem-message">Silakan login untuk melihat redeem code.</p>
             <button class="btn" id="redeem-btn" onclick="showRedeemCode()">Tampilkan Redeem Code</button>
-            <div id="redeem-details" style="margin-top: 20px; display: none;">
+            <div id="redeem-details" class="redeem-details">
                 <p><strong>Redeem Code:</strong> <span id="redeem-code-value"></span></p>
                 <p><strong>Petunjuk:</strong> Gunakan code ini di dalam game dengan command /redeem (code) untuk mendapatkan hadiah.</p>
             </div>
-        </div>
+        </section>
 
         <!-- Event -->
-        <div class="event" id="event">
+        <section class="event" id="event">
             <h2>🎉 Event Minecraft: Build Competition 🏆</h2>
             <p id="event-info">Ayo tunjukkan kreativitasmu dalam event Build Competition! Menangkan hadiah menarik dan jadilah yang terbaik!</p>
             
@@ -104,86 +111,77 @@
                 <p><strong>⏳ Waktu tersisa:</strong> <span id="countdown"></span></p>
             </div>
             <a id="register-btn" class="btn" href="event.html" target="_blank">Daftar Sekarang</a>
-        </div>
+        </section>
 
-        <!-- Donasi -->
-        <div class="donation" id="donation">
+        <!-- Donation -->
+        <section class="donation" id="donation">
             <h2>Ingin Mendukung Kami?</h2>
             <p>Klik link di bawah ini untuk memberikan donasi:</p>
             <a class="btn" href="https://sociabuzz.com/kimnetwork/tribe" target="_blank">Donasi Sekarang</a>
-        </div>
+        </section>
 
-        <!-- Popup Login/Register -->
+        <!-- Login Popup -->
         <div id="login-popup" class="popup">
             <div class="popup-content">
                 <span class="close" onclick="closeLoginPopup()">&times;</span>
                 
-                <!-- Form Login -->
-<div id="login-form">
-    <!--div class="auth-box"-->
-        <h2 id="popup-title">Login</h2>
-        <hr class="divider"> <!-- Garis pembatas -->
-        <input type="email" id="login-email" placeholder="Masukkan Email" required>
-        <input type="password" id="login-password" placeholder="Masukkan Password" required>
-        <button class="btn" onclick="submitAuth()">Login</button>
+                <!-- Login Form -->
+                <div id="login-form">
+                    <h2 id="popup-title">Login</h2>
+                    <hr class="divider">
+                    <input type="email" id="login-email" placeholder="Masukkan Email" required>
+                    <input type="password" id="login-password" placeholder="Masukkan Password" required>
+                    <button class="btn" onclick="submitAuth()">Login</button>
 
-        <div class="social-login">
-            <p>Atau login dengan:</p>
-            <button id="google-login-btn" class="icon-button">
-                <i class="fab fa-google"></i>
-            </button>
-            <!--button id="whatsapp-login-btn" class="icon-button">
-                <i class="fab fa-whatsapp"></i>
-            </button-->
-        </div>
+                    <div class="social-login">
+                        <p>Atau login dengan:</p>
+                        <button id="google-login-btn" class="icon-button">
+                            <i class="fab fa-google"></i>
+                        </button>
+                    </div>
 
-        <p id="toggle-auth">Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a></p>
-    </div>
-</div>
+                    <p id="toggle-auth">Belum punya akun? <a href="#" onclick="toggleAuthMode()">Register di sini</a></p>
+                </div>
 
-<!-- Form Registrasi -->
-<div id="register-form" style="display: none;">
-    <!--div class="auth-box"-->
-        <h2 id="popup-title">Pendaftaran</h2>
-        <hr class="divider"> <!-- Garis pembatas -->
-        <input type="email" id="register-email" placeholder="Masukkan Email" required>
-        <input type="password" id="register-password" placeholder="Masukkan Password" required>
-        <button class="btn" onclick="submitAuth()">Daftar</button>
+                <!-- Registration Form -->
+                <div id="register-form">
+                    <h2 id="popup-title">Pendaftaran</h2>
+                    <hr class="divider">
+                    <input type="email" id="register-email" placeholder="Masukkan Email" required>
+                    <input type="password" id="register-password" placeholder="Masukkan Password" required>
+                    <button class="btn" onclick="submitAuth()">Daftar</button>
 
-        <div class="social-login">
-            <p>Atau daftar dengan:</p>
-            <button id="google-login-btn" class="icon-button">
-                <i class="fab fa-google"></i>
-            </button>
-            <!--button id="whatsapp-login-btn" class="icon-button">
-                <i class="fab fa-whatsapp"></i>
-            </button-->
-        </div>
+                    <div class="social-login">
+                        <p>Atau daftar dengan:</p>
+                        <button id="google-login-btn" class="icon-button">
+                            <i class="fab fa-google"></i>
+                        </button>
+                    </div>
 
-        <p id="toggle-auth">Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a></p>
-</div>
+                    <p id="toggle-auth">Sudah punya akun? <a href="#" onclick="toggleAuthMode()">Login di sini</a></p>
+                </div>
             </div>
         </div>
     </main>
 
-    <!-- Ikon Musik -->
-    <div id="music-icon" onclick="togglePanel()">🎵</div>
-
-    <!-- Panel Kontrol Musik -->
-    <div id="music-panel" style="display: none;">
-        <button onclick="toggleMusic()">Play/Pause</button>
-        <button onclick="stopMusic()">Stop</button>
+    <!-- Music Controls -->
+    <div id="music-controls">
+        <div id="music-icon" onclick="togglePanel()">🎵</div>
+        <div id="music-panel">
+            <button id="toggle-music" onclick="toggleMusic()">🔊</button>
+            <button id="stop-music" onclick="stopMusic()">🔈</button>
+        </div>
     </div>
 
-    <!-- Audio -->
+    <!-- Background Music -->
     <audio id="bg-music" loop>
-    <source src="https://github.com/Naufal90/My-web/raw/2f254663630ae4c348aca04a1e4c4555e370971e/public/assets/AKU%20DAH%20LUPA%5Bmusic+vocals%5D.mp3" type="audio/mpeg">
+        <source src="https://github.com/Naufal90/My-web/raw/2f254663630ae4c348aca04a1e4c4555e370971e/public/assets/AKU%20DAH%20LUPA%5Bmusic+vocals%5D.mp3" type="audio/mpeg">
     </audio>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
-            <p>&copy; 2020  KimNetwork. All rights reserved.</p>
+            <p>&copy; 2020 KimNetwork. All rights reserved.</p>
             <div class="footer-links">
                 <a href="#terms-of-service">Syarat & Ketentuan</a>
                 <a href="#privacy-policy">Kebijakan Privasi</a>
@@ -202,59 +200,12 @@
         </div>
     </footer>
 
-    <!-- Script -->
+    <!-- JavaScript Files -->
+    <script src="supabase.js"></script>
+    <script src="music.js"></script>
+    <script src="staff.js"></script>
     <script src="script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
     <script>eruda.init();</script>
-     <!--script>
-        document.addEventListener("DOMContentLoaded", function() {
-            let music = document.getElementById("bg-music");
-            let musicPanel = document.getElementById("music-panel");
-            let musicIcon = document.getElementById("music-icon");
-            let toggleMusicBtn = document.getElementById("toggle-music");
-            let stopMusicBtn = document.getElementById("stop-music");
-
-            // Coba autoplay saat halaman dimuat
-            let playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay diblokir, menunggu interaksi pengguna.");
-                });
-            }
-
-            // Pastikan musik mulai setelah interaksi pertama jika autoplay diblokir
-            document.addEventListener("click", function () {
-                if (music.paused) {
-                    music.play();
-                }
-            }, { once: true });
-
-            function togglePanel() {
-                musicPanel.style.display = (musicPanel.style.display === "none" || musicPanel.style.display === "") ? "block" : "none";
-            }
-
-            function toggleMusic() {
-                if (music.paused) {
-                    music.play();
-                } else {
-                    music.pause();
-                }
-            }
-
-            function stopMusic() {
-                music.pause();
-                music.currentTime = 0; // Reset ke awal
-            }
-
-            // Event listener
-            musicIcon.addEventListener("click", togglePanel);
-            toggleMusicBtn.addEventListener("click", toggleMusic);
-            stopMusicBtn.addEventListener("click", stopMusic);
-
-            // Pastikan ikon musik muncul saat halaman dimuat
-            musicPanel.style.display = "none";
-            musicIcon.style.display = "block";
-        });
-</script-->
 </body>
 </html>

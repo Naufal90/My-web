@@ -1,7 +1,7 @@
 /* Background bertema builder */
 body {
-    font-family: 'Minecraftia', Arial, sans-serif;
-    background: url('builder-bg.jpg') no-repeat center center fixed;
+    font-family: 'Minecraftia-Regular', Arial, sans-serif;
+    background: url('https://raw.githubusercontent.com/Naufal90/My-web/39ddcf2412833582c58171ee99fdca8cc38d10a0/public/assets/event-bg.jpg') no-repeat center center fixed;
     background-size: cover;
     margin: 0;
     padding: 0;
@@ -27,13 +27,20 @@ header h1 {
 
 header p {
     font-size: 1.4em;
+    font-weight: bold;
+    text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
+    background: linear-gradient(90deg, #8B4513, #A0522D);
     color: white;
+    padding: 10px;
+    display: inline-block;
+    border-radius: 10px;
+    border: 4px solid #5C4033;
     margin-bottom: 20px;
 }
 
 /* Form dengan tampilan kotak kayu */
 .form-container {
-    background: url('wood-texture.png');
+    background: url('https://raw.githubusercontent.com/Naufal90/My-web/6a9e38ea6ef820741820721e7ac64a0f899d22fe/public/assets/wood-bg-event.jpg');
     padding: 25px;
     border-radius: 12px;
     display: inline-block;
@@ -43,7 +50,7 @@ header p {
 
 /* Judul form */
 h2 {
-    color: #FFF;
+    color: #FFD700;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
 }
 
@@ -52,6 +59,8 @@ label {
     font-weight: bold;
     color: white;
     font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
 }
 
 /* Input dengan efek pixel */
@@ -102,6 +111,6 @@ button:hover {
 }
 
 @font-face {
-    font-family: 'Minecraftia';
-    src: url('Minecraftia.ttf') format('truetype');
+    font-family: 'Minecraftia-Regular';
+    src: url('https://raw.githubusercontent.com/Naufal90/My-web/raw/refs/heads/main/public/assets/Minecraftia-Regular.ttf') format('truetype');
     }

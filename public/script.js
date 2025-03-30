@@ -1,58 +1,16 @@
-// Inisialisasi Supabase Client
-const SUPABASE_URL = "https://iafrlxyoeostvhnoywnv.supabase.co"; // Ganti dengan URL Supabase kamu
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlhZnJseHlvZW9zdHZobm95d252Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg1MzMwNjAsImV4cCI6MjA1NDEwOTA2MH0.WEdZeif209ew2iEWsGs9Y10529hDFI9BVdFvz_7Yeno"; // Ganti dengan API Key Supabase kamu
-
 document.addEventListener("DOMContentLoaded", async () => {
-    window.supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    console.log("[DEBUG] Supabase berhasil diinisialisasi:", window.supabase);
-    await updateHeader(); // Perbarui header saat halaman dimuat
+    console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari supabase.js...");
+
+    // Menunggu Supabase diinisialisasi jika belum ada
+    while (!window.supabase) {
+        console.warn("[WARNING] Supabase belum diinisialisasi di supabase.js. Menunggu...");
+        await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
+    }
+
+    console.log("[DEBUG] Supabase berhasil digunakan:");
     
-    let music = document.getElementById("bg-music");
-            let musicPanel = document.getElementById("music-panel");
-            let musicIcon = document.getElementById("music-icon");
-            let toggleMusicBtn = document.getElementById("toggle-music");
-            let stopMusicBtn = document.getElementById("stop-music");
-
-            // Coba autoplay saat halaman dimuat
-            let playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(error => {
-                    console.log("Autoplay diblokir, menunggu interaksi pengguna.");
-                });
-            }
-
-            // Pastikan musik mulai setelah interaksi pertama jika autoplay diblokir
-            document.addEventListener("click", function () {
-                if (music.paused) {
-                    music.play();
-                }
-            }, { once: true });
-
-            function togglePanel() {
-                musicPanel.style.display = (musicPanel.style.display === "none" || musicPanel.style.display === "") ? "block" : "none";
-            }
-
-            function toggleMusic() {
-                if (music.paused) {
-                    music.play();
-                } else {
-                    music.pause();
-                }
-            }
-
-            function stopMusic() {
-                music.pause();
-                music.currentTime = 0; // Reset ke awal
-            }
-
-            // Event listener
-            musicIcon.addEventListener("click", togglePanel);
-            toggleMusicBtn.addEventListener("click", toggleMusic);
-            stopMusicBtn.addEventListener("click", stopMusic);
-
-            // Pastikan ikon musik muncul saat halaman dimuat
-            musicPanel.style.display = "none";
-            musicIcon.style.display = "block";
+    console.log("[DEBUG] Supabase sudah tersedia di supabase.js:");
+    await updateHeader(); // Perbarui header saat halaman dimuat
 });
 
 // Fungsi untuk memperbarui header berdasarkan status login
@@ -192,14 +150,32 @@ function showServerInfo() {
 }
 
 // Popup login/register
-function openLoginPopup() {
-    console.log("[DEBUG] Membuka popup login...");
+function openLoginPopup(mode) {
+    console.log(`[DEBUG] Membuka popup ${mode}...`);
+
     const loginPopupElement = document.getElementById('login-popup');
+    const popupTitle = document.getElementById("popup-title");
+    const loginForm = document.getElementById("login-form");
+    const registerForm = document.getElementById("register-form");
+
     if (!loginPopupElement) {
         console.error("[ERROR] Elemen login-popup tidak ditemukan!");
         return;
     }
+
+    // Pastikan popup muncul
     loginPopupElement.style.display = 'flex';
+
+    // Tentukan mode yang ingin ditampilkan
+    if (mode === "register") {
+        popupTitle.innerText = "Pendaftaran"; 
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+    } else {
+        popupTitle.innerText = "Login"; 
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+    }
 }
 
 function closeLoginPopup() {
@@ -335,7 +311,7 @@ const eventDate = new Date("2025-04-10T15:00:00+07:00");
 async function updateCountdown() {
     const countdownElement = document.getElementById("countdown");
     const eventInfoElement = document.getElementById("event-info");
-    const registerBtnElement = document.getElementById("register-btn");
+    let registerBtnElement = document.getElementById("register-btn");
 
     if (!countdownElement || !eventInfoElement || !registerBtnElement) {
         return console.error("[ERROR] Elemen countdown, event-info, atau register-btn tidak ditemukan!");
@@ -361,16 +337,23 @@ async function updateCountdown() {
     // Cek status login
     const { data } = await supabase.auth.getSession();
 
+    // Buat tombol baru agar tidak ada event listener ganda
+    let newBtn = registerBtnElement.cloneNode(true);
+    registerBtnElement.replaceWith(newBtn);
+    registerBtnElement = newBtn; // Perbarui referensi ke tombol baru
+
     if (data.session) {
         // Jika user sudah login, izinkan akses ke halaman event
         registerBtnElement.addEventListener("click", function () {
             window.location.href = "event.html";
         });
+        console.log("[DEBUG] User sudah login, tombol diarahkan ke event.html");
     } else {
         // Jika belum login, blokir akses dan tampilkan popup login
         registerBtnElement.addEventListener("click", function (event) {
             event.preventDefault();
             openLoginPopup();
+            console.log("[DEBUG] User belum login, tampilkan popup login");
         });
     }
 }

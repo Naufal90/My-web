@@ -160,6 +160,7 @@ footer {
     color: #00d9ff;
     transform: translateY(-3px);
 }
+
 .status, .donation, .server-info, .player-list, .event, .reedem-code {
     margin: 20px auto;
     padding: 20px;
@@ -249,7 +250,8 @@ ul {
     margin: 0;
 }
 
-ul li, .event-details p {
+ul li,
+.event-details p {
     margin: 5px 0;
 }
 
@@ -278,6 +280,7 @@ ul li, .event-details p {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -297,60 +300,22 @@ ul li, .event-details p {
 }
 
 #google-login-btn {
-    background-color: #db4437; /* Warna Google */
+    background-color: #db4437;
+    /* Warna Google */
     color: white;
 }
 
 #whatsapp-login-btn {
-    background-color: #25d366; /* Warna WhatsApp */
+    background-color: #25d366;
+    /* Warna WhatsApp */
     color: white;
 }
 
-.status, .server-info, .player-list, .donation, .event, .redeem-code {
+.status, .server-info, .player-list, .donation, .event, .redeem-code, .staff-container {
     animation: fadeInUp 0.6s ease forwards;
 }
 
-/* Styling ikon kecil di pojok kanan bawah */
-#music-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
-    cursor: pointer;
-    z-index: 100;
-}
-
-#music-icon img {
-    width: 100%;
-    height: auto;
-}
-
-audio {
-    display: none;
-}
-
-/* Styling panel musik */
-#music-panel {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    background: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 10px;
-    border-radius: 10px;
-    display: none; /* Pastikan awalnya tersembunyi */
-}
-
-#music-panel button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    margin: 5px;
-}
-
+/* ==================== FORM STYLES ==================== */
 #login-form, #register-form {
     width: 100%;
     max-width: 350px;
@@ -358,6 +323,16 @@ audio {
     padding: 20px;
     background: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+
+#login-form, #register-form {
+    display: none; /* Sembunyikan semua form */
+}
+
+#login-form {
+    display: block; /* Login muncul pertama kali */
 }
 
 /* Popup */
@@ -372,13 +347,17 @@ audio {
     justify-content: center;
     align-items: center;
 }
+
 .popup-content {
+	width: 90%;
+	max-width: 350px;
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
     color: #000;
     text-align: center;
     position: relative;
+    box-sizing: border-box;
 }
 
 .popup-content .close {
@@ -393,10 +372,11 @@ audio {
     display: block;
     margin: 10px auto;
     padding: 10px;
-    width: 80%;
+    width: 90%;
     max-width: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box;
 }
 
 .popup-content button {
@@ -526,3 +506,95 @@ audio {
 #toggle-auth a:hover {
     text-decoration: underline;
 }
+
+/* ==================== STAFF LIST =================== */
+#staff-list {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.staff-container {
+    display: flex;
+    gap: 15px;
+    padding: 10px 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.staff-member {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    min-width: 200px;
+    max-width: 80%;
+    padding: 10px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    margin: 5px;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease;
+}
+
+.skin-head {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid #ffaa00; /* Border lebih tebal dan warna emas */
+    background-color: #333;
+    margin: 0 auto 10px;
+    display: block;
+    image-rendering: pixelated; /* Penting untuk skin Minecraft */
+    object-fit: cover; /* Pastikan gambar tidak terdistorsi */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Efek bayangan */
+    transition: transform 0.3s ease; /* Animasi hover */
+}
+
+skin-head:hover {
+    transform: scale(1.05);  /*Sedikit membesar saat dihover */
+    border-color: #fff; /*Warna border berubah */
+}
+    
+.staff-member.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+    .staff-container {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        justify-content: flex-start;
+        padding-bottom: 15px;
+    }
+    
+    .staff-member {
+        scroll-snap-align: start;
+        flex: 0 0 80%; /* Larger width for mobile scrolling */
+        min-width: auto;
+    }
+    
+    /* Scrollbar styling */
+    .staff-container::-webkit-scrollbar {
+        height: 5px;
+    }
+    
+    .staff-container::-webkit-scrollbar-thumb {
+        background: #555;
+        border-radius: 5px;
+    }
+}
+
+

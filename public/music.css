@@ -1,0 +1,40 @@
+/* Styling ikon kecil di pojok kanan bawah */
+#music-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+    z-index: 100;
+}
+
+#music-icon img {
+    width: 100%;
+    height: auto;
+}
+
+audio {
+    display: none;
+}
+
+/* Styling panel musik */
+#music-panel {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    display: none; /* Pastikan awalnya tersembunyi */
+}
+
+#music-panel button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+}

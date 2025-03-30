@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari script.js...");
+    console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari supabase.js...");
 
     // Menunggu Supabase diinisialisasi jika belum ada
     while (!window.supabase) {
-        console.warn("[WARNING] Supabase belum diinisialisasi di script.js. Menunggu...");
+        console.warn("[WARNING] Supabase belum diinisialisasi di supabase.js. Menunggu...");
         await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
     }
 
@@ -68,41 +68,4 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
         }
     });
-});
-
-    // Fungsi untuk mengirim email via Resend
-    async function sendEmail(name, email) {
-        const eventName = "Event KimNetwork";
-        const resendApiKey = "re_cnfCgBHC_DFZhhpdRx5iaxVUanuPomiLS"; // Pastikan sudah didefinisikan
-
-        try {
-            const response = await fetch("https://api.resend.com/emails", {
-                method: "POST",
-                headers: {
-                    "Authorization": `Bearer ${resendApiKey}`,
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    from: "KimNetwork <noreply@onresend.com>",
-                    to: [email],
-                    subject: `Pendaftaran Berhasil: ${eventName}`,
-                    html: `<p>Halo ${name},</p>
-                           <p>Terima kasih telah mendaftar di <b>${eventName}</b>!</p>
-                           <p>Pastikan Anda mengikuti informasi terbaru di server kami.</p>
-                           <br>
-                           <p>Salam,</p>
-                           <p><b>Tim KimNetwork</b></p>`
-                })
-            });
-
-            const result = await response.json();
-            if (!response.ok) {
-                console.error("[ERROR] Gagal mengirim email:", result);
-                throw new Error("Gagal mengirim email konfirmasi.");
-            }
-
-            console.log("[DEBUG] Email berhasil dikirim:", result);
-        } catch (err) {
-            console.error("[ERROR] Terjadi kesalahan saat mengirim email:", err);
-        }
-    }
+    
