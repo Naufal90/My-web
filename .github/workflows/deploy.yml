@@ -15,10 +15,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Clear GitHub Pages Cache
+        run: |
+          curl -X PURGE https://server.kimnetwork.my.id || true
+        continue-on-error: true
+
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3  # Pastikan pakai ini, bukan upload-artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          path: public  # Sesuaikan path dengan folder yang berisi index.html
+          path: public  # Sesuaikan dengan folder yang berisi index.html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
