@@ -345,7 +345,7 @@ async function updateCountdown() {
     if (data.session) {
         // Jika user sudah login, izinkan akses ke halaman event
         registerBtnElement.addEventListener("click", function () {
-            window.location.href = "event/index.html";
+            window.location.href = "event/";
         });
         console.log("[DEBUG] User sudah login, tombol diarahkan ke event.html");
     } else {
