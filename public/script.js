@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
     }
 
-    console.log("[DEBUG] Supabase berhasil digunakan:");
+    console.log("[DEBUG] Supabase berhasil digunakan");
     
-    console.log("[DEBUG] Supabase sudah tersedia di supabase.js:");
+    console.log("[DEBUG] Supabase sudah tersedia di supabase.js");
     await updateHeader(); // Perbarui header saat halaman dimuat
 });
 
@@ -345,7 +345,7 @@ async function updateCountdown() {
     if (data.session) {
         // Jika user sudah login, izinkan akses ke halaman event
         registerBtnElement.addEventListener("click", function () {
-            window.location.href = "event.html";
+            window.location.href = "event/index.html";
         });
         console.log("[DEBUG] User sudah login, tombol diarahkan ke event.html");
     } else {
