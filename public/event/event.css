@@ -49,10 +49,16 @@ header p {
     justify-content: center;
     box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6);
     border: 5px solid #654321;
-    max-width: 90%; /* Biar tidak terlalu lebar di mobile */
+    width: 100%;
+    max-width: 500px; /* Batasi lebar maksimum agar tidak terlalu besar di desktop */
     margin: auto; /* Pusatkan di tengah */
 }
-/* Judul form */
+
+@media (max-width: 768px) {
+    .form-container {
+        max-width: 90%; /* Agar lebih besar di mode mobile */
+    }
+}/* Judul form */
 h2 {
     color: #FFD700;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
