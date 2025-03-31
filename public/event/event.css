@@ -43,11 +43,15 @@ header p {
     background: url('https://raw.githubusercontent.com/Naufal90/My-web/6a9e38ea6ef820741820721e7ac64a0f899d22fe/public/assets/wood-bg-event.jpg');
     padding: 25px;
     border-radius: 12px;
-    display: inline-block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6);
     border: 5px solid #654321;
+    max-width: 90%; /* Biar tidak terlalu lebar di mobile */
+    margin: auto; /* Pusatkan di tengah */
 }
-
 /* Judul form */
 h2 {
     color: #FFD700;
