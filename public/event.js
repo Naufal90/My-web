@@ -68,4 +68,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
         }
     });
+  });
     
