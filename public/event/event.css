@@ -40,25 +40,24 @@ header p {
 
 /* Form dengan tampilan kotak kayu */
 .form-container {
-    background: url('https://raw.githubusercontent.com/Naufal90/My-web/6a9e38ea6ef820741820721e7ac64a0f899d22fe/public/assets/wood-bg-event.jpg');
-    padding: 25px;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6);
-    border: 5px solid #654321;
-    width: 100%;
-    max-width: 500px; /* Batasi lebar maksimum agar tidak terlalu besar di desktop */
-    margin: auto; /* Pusatkan di tengah */
+background: url('https://raw.githubusercontent.com/Naufal90/My-web/6a9e38ea6ef820741820721e7ac64a0f899d22fe/public/assets/wood-bg-event.jpg');
+padding: 25px;
+border-radius: 12px;
+display: inline-block;
+box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.6);
+border: 5px solid #654321;
 }
 
 @media (max-width: 768px) {
     .form-container {
-        max-width: 90%; /* Agar lebih besar di mode mobile */
+        display: block; /* Ubah dari inline-block ke block agar lebih fleksibel */
+        width: 90%; /* Supaya tidak terlalu kecil di mobile */
+        max-width: 400px; /* Batasi agar tetap proporsional */
+        margin: auto; /* Pusatkan di tengah */
+        padding: 20px; /* Sesuaikan padding agar tidak terlalu besar */
     }
-}/* Judul form */
+}
+
 h2 {
     color: #FFD700;
     text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.8);
