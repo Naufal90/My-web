@@ -7,13 +7,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
     }
 
-    console.log("[DEBUG] Supabase berhasil digunakan:", window.supabase);
+    console.log("[DEBUG] Supabase berhasil digunakan");
 
     // Cek apakah Supabase bisa diakses
     try {
         const { data, error } = await window.supabase.from("event_registrations").select("*").limit(1);
         if (error) throw error;
-        console.log("[DEBUG] Supabase terhubung, data contoh:", data);
+        console.log("[DEBUG] Supabase terhubung, data contoh");
     } catch (err) {
         console.error("[ERROR] Gagal menghubungkan ke Supabase:", err);
     }
