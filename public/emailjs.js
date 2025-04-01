@@ -17,7 +17,8 @@ const EMAILJS_CONFIG = {
 function sendEmail(name, email) {
     return emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, {
         to_name: name,
-        to_email: email
+        to_email: email,
+        message: Terima kasih telah mendaftar di Event building Part 1 KimNetwork!
     }).then(function(response) {
         console.log("[DEBUG] Email berhasil dikirim:", response);
     }).catch(function(error) {
