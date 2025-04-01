@@ -57,9 +57,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             console.log("[DEBUG] Data berhasil disimpan di Supabase:", data);
 
-            // Kirim email konfirmasi via Resend
+            // Kirim email konfirmasi via EmailJS
             console.log("[DEBUG] Mengirim email konfirmasi ke:", email);
-            await sendEmail(name, email);
+            if (typeof sendEmail === "function") {
+                await sendEmail(name, email);
+                console.log("[DEBUG] Email konfirmasi berhasil dikirim!");
+            } else {
+                console.error("[ERROR] sendEmail tidak ditemukan! Pastikan emailjs.js sudah dimuat.");
+            }
 
             document.getElementById("status").textContent = "Pendaftaran berhasil! Cek email Anda.";
             form.reset();
@@ -68,5 +73,4 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
         }
     });
-  });
-    
+});
