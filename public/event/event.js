@@ -57,6 +57,25 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             console.log("[DEBUG] Data berhasil disimpan di Supabase:", data);
 
+            // Konstanta untuk EmailJS
+const EMAILJS_CONFIG = {
+    SERVICE_ID: "service_8h7daa7",   // Ganti dengan Service ID
+    TEMPLATE_ID: "template_p4sylrw"  // Ganti dengan Template ID
+};
+
+// Fungsi untuk mengirim email
+function sendEmail(name, email) {
+    return emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, {
+        to_name: name,
+        to_email: email,
+        message: "Terima kasih telah mendaftar di Event building Part 1 KimNetwork!"
+    }).then(function(response) {
+        console.log("[DEBUG] Email berhasil dikirim:", response);
+    }).catch(function(error) {
+        console.error("[ERROR] Gagal mengirim email:", error);
+    });
+}
+
             // Kirim email konfirmasi via EmailJS
             console.log("[DEBUG] Mengirim email konfirmasi ke:", email);
             if (typeof sendEmail === "function") {
