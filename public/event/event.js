@@ -1,95 +1,144 @@
 document.addEventListener("DOMContentLoaded", async () => {
     console.log("[DEBUG] Halaman dimuat. Menggunakan Supabase dari supabase.js...");
 
-    // Menunggu Supabase diinisialisasi jika belum ada
-    while (!window.supabase) {
-        console.warn("[WARNING] Supabase belum diinisialisasi di supabase.js. Menunggu...");
-        await new Promise(resolve => setTimeout(resolve, 500)); // Tunggu 500ms
+    // Konfigurasi EmailJS
+    const EMAILJS_CONFIG = {
+        SERVICE_ID: "service_8h7daa7",
+        TEMPLATE_ID: "template_p4sylrw"
+    };
+    
+    async function waitForEmailJS(maxRetries = 10, interval = 300) {
+        let retries = 0;
+        
+        while (retries < maxRetries) {
+            if (window.emailjs && window.emailjs.init) {
+                console.log("[DEBUG] EmailJS siap digunakan");
+                return true;
+            }
+            
+            console.warn(`[WAIT] Menunggu EmailJS... (Percobaan ${retries + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, interval));
+            retries++;
+        }
+        
+        throw new Error("EmailJS gagal diinisialisasi setelah beberapa percobaan");
     }
 
-    console.log("[DEBUG] Supabase berhasil digunakan");
-
-    // Cek apakah Supabase bisa diakses
+    // Fungsi untuk mengirim email
+    async function sendEmail(name, email, platform) {
+        try {
+            const response = await emailjs.send(
+                EMAILJS_CONFIG.SERVICE_ID,
+                EMAILJS_CONFIG.TEMPLATE_ID,
+                {
+                    to_name: name,
+                    email: email,
+                    event_name: "Building Part 1 KimNetwork",
+                    platform: platform,
+                    message: `Terima kasih telah mendaftar di Event building Part 1 KimNetwork!)`
+                }
+            );
+            console.log("[DEBUG] Email berhasil dikirim:", response);
+            return response;
+        } catch (error) {
+            console.error("[ERROR] Gagal mengirim email:", error);
+            throw error;
+        }
+    }
+    
     try {
-        const { data, error } = await window.supabase.from("event_registrations").select("*").limit(1);
-        if (error) throw error;
-        console.log("[DEBUG] Supabase terhubung, data contoh");
-    } catch (err) {
-        console.error("[ERROR] Gagal menghubungkan ke Supabase:", err);
-    }
+        // Tunggu EmailJS siap pertama kali
+        await waitForEmailJS();
 
-    // Cek apakah formulir ada sebelum menambahkan event listener
-    const form = document.getElementById("event-form");
-    if (!form) {
-        console.error("[ERROR] Formulir event tidak ditemukan di halaman!");
-        return;
-    }
+        // Menunggu Supabase diinisialisasi
+        while (!window.supabase) {
+            console.warn("[WARNING] Supabase belum diinisialisasi. Menunggu...");
+            await new Promise(resolve => setTimeout(resolve, 500));
+        }
 
-    // Event listener untuk form pendaftaran event
-    form.addEventListener("submit", async function (event) {
-        event.preventDefault();
+        // Cek koneksi Supabase
+        try {
+            const { data, error } = await window.supabase.from("event_registrations").select("*").limit(1);
+            if (error) throw error;
+            console.log("[DEBUG] Supabase terhubung, data contoh:", data);
+        } catch (err) {
+            console.error("[ERROR] Gagal menghubungkan ke Supabase:", err);
+        }
 
-        const name = document.getElementById("name").value.trim();
-        const phone = document.getElementById("phone").value.trim();
-        const gamertag = document.getElementById("gamertag").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const termsAgreed = document.getElementById("terms").checked;
-
-        console.log("[DEBUG] Data form:", { name, phone, gamertag, email, termsAgreed });
-
-        if (!termsAgreed) {
-            console.error("[ERROR] Syarat & ketentuan belum disetujui.");
-            document.getElementById("status").textContent = "Anda harus menyetujui syarat & ketentuan!";
+        // Cek formulir
+        const form = document.getElementById("event-form");
+        if (!form) {
+            console.error("[ERROR] Formulir event tidak ditemukan!");
             return;
         }
 
-        try {
-            // Simpan data ke Supabase
-            console.log("[DEBUG] Mengirim data ke Supabase...");
-            const { data, error } = await window.supabase.from("event_registrations").insert([
-                { name, phone, gamertag, email, terms_agreed: termsAgreed }
-            ]);
+        // Event listener untuk form
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
 
-            if (error) {
-                console.error("[ERROR] Gagal menyimpan ke Supabase:", error);
-                throw error;
+            // Ambil nilai form
+            const name = document.getElementById("name").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const gamertag = document.getElementById("gamertag").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const termsAgreed = document.getElementById("terms").checked;
+            const platform = document.querySelector('input[name="platform"]:checked')?.value || "Tidak ditentukan";
+
+            console.log("[DEBUG] Data form:", { name, phone, gamertag, email, termsAgreed, platform });
+
+            // Validasi
+            if (!termsAgreed) {
+                document.getElementById("status").textContent = "Anda harus menyetujui syarat & ketentuan!";
+                document.getElementById("status").style.color = "red";
+                return;
             }
 
-            console.log("[DEBUG] Data berhasil disimpan di Supabase:", data);
-
-            // Konstanta untuk EmailJS
-const EMAILJS_CONFIG = {
-    SERVICE_ID: "service_8h7daa7",   // Ganti dengan Service ID
-    TEMPLATE_ID: "template_p4sylrw"  // Ganti dengan Template ID
-};
-
-// Fungsi untuk mengirim email
-function sendEmail(name, email) {
-    return emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, {
-        to_name: name,
-        to_email: email,
-        message: "Terima kasih telah mendaftar di Event building Part 1 KimNetwork!"
-    }).then(function(response) {
-        console.log("[DEBUG] Email berhasil dikirim:", response);
-    }).catch(function(error) {
-        console.error("[ERROR] Gagal mengirim email:", error);
-    });
-}
-
-            // Kirim email konfirmasi via EmailJS
-            console.log("[DEBUG] Mengirim email konfirmasi ke:", email);
-            if (typeof sendEmail === "function") {
-                await sendEmail(name, email);
-                console.log("[DEBUG] Email konfirmasi berhasil dikirim!");
-            } else {
-                console.error("[ERROR] sendEmail tidak ditemukan! Pastikan emailjs.js sudah dimuat.");
+            if (!platform) {
+                document.getElementById("status").textContent = "Silakan pilih platform (Java/Bedrock)!";
+                document.getElementById("status").style.color = "red";
+                return;
             }
 
-            document.getElementById("status").textContent = "Pendaftaran berhasil! Cek email Anda.";
-            form.reset();
-        } catch (err) {
-            console.error("[ERROR] Terjadi kesalahan:", err);
-            document.getElementById("status").textContent = "Terjadi kesalahan: " + err.message;
-        }
-    });
+            try {
+                // Simpan ke Supabase
+                const { data, error } = await window.supabase
+                    .from("event_registrations")
+                    .insert([{ 
+                        name, 
+                        phone, 
+                        gamertag, 
+                        email, 
+                        platform,
+                        terms_agreed: termsAgreed 
+                    }]);
+
+                if (error) throw error;
+
+                // Kirim email
+                await sendEmail(name, email, platform);
+
+                // Beri feedback sukses
+                document.getElementById("status").textContent = "Pendaftaran berhasil! Cek email Anda.";
+                document.getElementById("status").style.color = "green";
+                form.reset();
+
+            } catch (err) {
+                console.error("[ERROR]", err);
+                
+                let errorMessage = "Terjadi kesalahan saat memproses pendaftaran";
+                if (err.message.includes("duplicate")) {
+                    errorMessage = "Data sudah terdaftar sebelumnya";
+                } else if (err.message.includes("email")) {
+                    errorMessage = "Format email tidak valid";
+                }
+                
+                document.getElementById("status").textContent = errorMessage;
+                document.getElementById("status").style.color = "red";
+            }
+        });
+    } catch (error) {
+        console.error("[ERROR] Gagal menginisialisasi EmailJS:", error);
+        document.getElementById("status").textContent = "Sistem email sedang bermasalah, coba lagi nanti";
+        document.getElementById("status").style.color = "red";
+    }
 });

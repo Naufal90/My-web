@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Pendaftaran Event | KimNetwork</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="supabase.js"></script>
+    <link rel="stylesheet" href="event.css">
+</head>
+<body>
+    <div class="event-container">
+        <header>
+            <h1>Event Builder Challenge</h1>
+            <p>Daftarkan dirimu dan tunjukkan kreativitasmu!</p>
+        </header>
+        
+        <form id="event-form" class="form-container">
+            <h2>Pendaftaran Event</h2>
+            
+            <label for="name">Nama:</label>
+            <input type="text" id="name" required>
+
+            <label for="phone">Nomor WhatsApp:</label>
+            <input type="tel" id="phone" required>
+
+            <label for="gamertag">Gamertag:</label>
+            <input type="text" id="gamertag" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+            		
+            	<div class="form-group">
+    <label>Platform Minecraft:</label>
+    <div class="radio-group">
+        <label class="radio-container">
+            <input type="radio" id="java" name="platform" value="Java Edition">
+            <span class="radio-checkmark"></span>
+            Java Edition
+        </label>
+        <label class="radio-container">
+            <input type="radio" id="bedrock" name="platform" value="Bedrock Edition">
+            <span class="radio-checkmark"></span>
+            Bedrock Edition
+        </label>
+    </div>
+</div>
+
+            <div class="checkbox-container">
+                <input type="checkbox" id="terms" required>
+                <label for="terms">Saya menyetujui syarat & ketentuan event.</label>
+            </div>
+
+            <button type="submit">Daftar Sekarang</button>
+        </form>
+
+        <p id="status"></p>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="emailjs.js"></script>
+    <script src="event.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>eruda.init();</script>
+</body>
+</html>
